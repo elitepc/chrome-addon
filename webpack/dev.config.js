@@ -5,12 +5,13 @@ const autoprefixer = require('autoprefixer');
 const host = 'localhost';
 const port = 3000;
 const customPath = path.join(__dirname, './customPublicPath');
-const hotScript = 'webpack-hot-middleware/client?path=__webpack_hmr&dynamicPublicPath=true';
+const hotScript = 'react-hot-loader/patch';
 
 const baseDevConfig = () => ({
+  mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   entry: {
-    todoapp: [customPath, hotScript, path.join(__dirname, '../chrome/extension/todoapp')],
+    app: [customPath, hotScript, path.join(__dirname, '../chrome/extension/app')],
     background: [customPath, hotScript, path.join(__dirname, '../chrome/extension/background')],
   },
   devMiddleware: {
@@ -49,14 +50,11 @@ const baseDevConfig = () => ({
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
-      options: {
-        presets: ['react-hmre']
-      }
     }, {
       test: /\.css$/,
       use: [
         'style-loader',
-        'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+        'css-loader',
         {
           loader: 'postcss-loader',
           options: {
