@@ -1,19 +1,18 @@
-import React, { Component, PropTypes } from 'react';
-import { Provider } from 'react-redux';
-import App from './App';
+import { hot } from 'react-hot-loader/root';
+import React, { Component } from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
 
-export default class Root extends Component {
+import theme from '../styles/theme';
+import { App } from './App';
 
-  static propTypes = {
-    store: PropTypes.object.isRequired
-  };
-
+class Root extends Component {
   render() {
-    const { store } = this.props;
     return (
-      <Provider store={store}>
+      <ThemeProvider theme={theme}>
         <App />
-      </Provider>
+      </ThemeProvider>
     );
   }
 }
+
+export default hot(Root);

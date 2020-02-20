@@ -5,8 +5,9 @@ const autoprefixer = require('autoprefixer');
 const customPath = path.join(__dirname, './customPublicPath');
 
 module.exports = {
+  mode: 'production',
   entry: {
-    todoapp: [customPath, path.join(__dirname, '../chrome/extension/todoapp')],
+    app: [customPath, path.join(__dirname, '../chrome/extension/app')],
     background: [customPath, path.join(__dirname, '../chrome/extension/background')],
     inject: [customPath, path.join(__dirname, '../chrome/extension/inject')]
   },
@@ -45,7 +46,7 @@ module.exports = {
       test: /\.css$/,
       use: [
         'style-loader',
-        'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+        'css-loader',
         {
           loader: 'postcss-loader',
           options: {

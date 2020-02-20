@@ -1,42 +1,37 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
 
-class InjectApp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isVisible: false };
-  }
+const InjectApp = () => {
+  const [isVisible, setVisible] = useState(false)
 
-  buttonOnClick = () => {
-    this.setState({ isVisible: !this.state.isVisible });
-  };
+  buttonOnClick = useCallback(() => {
+    setVisible(!isVisible);
+  }, [isVisible, setVisible]);
 
-  render() {
-    return (
-      <div>
-        <button onClick={this.buttonOnClick}>
-          Open TodoApp
-        </button>
-        <Dock
-          position="right"
-          dimMode="transparent"
-          defaultSize={0.4}
-          isVisible={this.state.isVisible}
-        >
-          <iframe
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-            frameBorder={0}
-            allowTransparency="true"
-            src={chrome.extension.getURL(`inject.html?protocol=${location.protocol}`)}
-          />
-        </Dock>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <button onClick={this.buttonOnClick}>
+        Open App
+      </button>
+      <Dock
+        position="right"
+        dimMode="transparent"
+        defaultSize={0.4}
+        isVisible={this.state.isVisible}
+      >
+        <iframe
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+          frameBorder={0}
+          allowTransparency="true"
+          src={chrome.extension.getURL(`inject.html?protocol=${location.protocol}`)}
+        />
+      </Dock>
+    </div>
+  );
 }
 
 window.addEventListener('load', () => {
