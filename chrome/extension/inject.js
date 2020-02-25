@@ -1,20 +1,21 @@
 import { itJobsPaths } from '../../config';
-import { ITJobsLoader } from './page/loaders';
+import { ITJobsLoader } from './page/scrappers';
+import { ITJobsInjector } from './page/injectors';
 
 const getLoader = () => {
   if (window.location.href.match(itJobsPaths.join('|'))) {
     return new ITJobsLoader();
   }
-}
+};
+
+const getInjector = (loader) => {
+  if (window.location.href.match(itJobsPaths.join('|'))) {
+    return new ITJobsInjector(loader);
+  }
+};
 
 window.addEventListener('load', () => {
   const loader = getLoader();
-  loader.loadData();
-  console.log('loader: ', loader);
-  // const injector = new Injector(loader.data);
-
-  const injectDOM = document.createElement('div');
-  injectDOM.className = 'inject-react-example';
-  injectDOM.style.textAlign = 'center';
-  document.body.appendChild(injectDOM);
+  const injector = getInjector(loader);
+  injector.init();
 });
