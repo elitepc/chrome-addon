@@ -8,9 +8,9 @@
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "img/icon-16.png",
-    "48": "img/icon-48.png",
-    "128": "img/icon-128.png"
+    "16": "img/favicons/favicon_16_16.png",
+    "48": "img/favicons/favicon_48_48.png",
+    "128": "img/favicons/favicon_148_148.png"
   },
   "web_accessible_resources": [
     "inject.html"
@@ -19,5 +19,5 @@
     "page": "background.html"
   },
   "permissions": [ "contextMenus", "management", "tabs", "storage", "http://localhost:3000/*", "*://*.teamlyzer.com/*", "*://*.itjobs.pt/*", "*://*.linkedin.com/*"],
-  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
+  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000 https://pt.teamlyzer.com; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
 }

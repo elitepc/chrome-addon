@@ -1,15 +1,6 @@
-import Loader from './Loader';
+import { Base } from './Base';
 
-export class ITJobsLoader extends Loader {
-  constructor() {
-    super();
-
-    this.data = {
-      name: null,
-      slug: null,
-    };
-  }
-
+export class ITJobsLoader extends Base {
   isCompanyPage() {
     return /^\/empresa\/(.*)/.test(this.path);
   }
@@ -33,14 +24,14 @@ export class ITJobsLoader extends Loader {
   getCompanySlug() {
     let slug;
     if (this.isCompanyPage()) {
-      const pathParts = this.path.split('/');
-      slug = pathParts[2];
+      const [,, part] = this.path.split('/');
+      slug = part;
     }
     if (this.isJobOfferPage()) {
       const el = document.querySelectorAll('.job-header h4 a');
       const path = el[0].pathname;
-      const pathParts = path.split('/');
-      slug = pathParts[2];
+      const [,, part] = path.split('/');
+      slug = part;
     }
     return slug;
   }
@@ -49,8 +40,10 @@ export class ITJobsLoader extends Loader {
     const name = this.getCompanyName();
     const slug = this.getCompanySlug();
 
-    this.data.name = name;
-    this.data.slug = slug;
+    return {
+      name,
+      slug,
+    };
   }
 }
 
