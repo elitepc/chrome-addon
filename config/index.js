@@ -24,4 +24,6 @@ export const colors = {
   primaryFade: '#13231b',
   darkBackground: '#101820',
   darkForeground: '#878b8f',
+  lightBackground: '#fff',
+  lightForeground: '#101820',
 };
