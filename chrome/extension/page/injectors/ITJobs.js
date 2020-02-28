@@ -1,3 +1,4 @@
+import { colors } from '../../../../config';
 import { Base } from './Base';
 
 export class ITJobsInjector extends Base {
@@ -30,13 +31,13 @@ export class ITJobsInjector extends Base {
         heading,
         text,
         content,
+        list,
         link,
       } = this.getDetailsElement();
 
       container.classList.add('block');
       container.classList.add('sidebar');
       container.style.backgroundColor = '#111821';
-      container.style.color = '#878b8f';
       container.style.borderColor = '#222c36';
       container.style.boxShadow = '0 3px 0 0 rgba(34,44,54,.8)';
 
@@ -47,10 +48,17 @@ export class ITJobsInjector extends Base {
       text.classList.add('sidebar-text');
       text.classList.add('pull-left');
       text.style.backgroundColor = '#13231b';
-      text.style.color = '#59b287';
-      text.style.border = '1px solid #59b287';
+      text.style.color = colors.primary;
+      text.style.border = `1px solid ${colors.primary}`;
 
       content.classList.add('sidebar-content');
+
+      for (const child of list.children) {
+        const bar = child.children[0];
+        if (bar && bar.children[0]) {
+          child.children[0].children[0].color = colors.darkForeground;
+        }
+      }
 
       link.classList.add('related-more');
       link.classList.add('pull-right');
@@ -87,6 +95,50 @@ export class ITJobsInjector extends Base {
 
         sidebar.prepend(wrapper);
       }
+    }
+  }
+
+  addSalaryAverageToDOM() {
+    if (this.company.salary) {
+      const {
+        container,
+        title,
+        salary,
+        arrow,
+        averageSalaryContainer,
+      } = this.getSalaryElement();
+
+      container.classList.add('info');
+
+      title.classList.add('title');
+
+      salary.classList.add('field');
+
+      arrow.classList.add('fa');
+
+      if (this.company.salary.expectedMax < this.company.salary.averageMax) {
+        arrow.classList.add('fa-long-arrow-down');
+      } else {
+        arrow.classList.add('fa-long-arrow-up');
+      }
+
+      averageSalaryContainer.classList.add('field');
+
+
+      const icon = document.createElement('i');
+      icon.classList.add('fa');
+      icon.classList.add('fa-money');
+
+      const iconWrapper = document.createElement('div');
+      iconWrapper.classList.add('icon');
+      iconWrapper.appendChild(icon);
+
+      const listItem = document.createElement('li');
+      listItem.appendChild(iconWrapper);
+      listItem.appendChild(container);
+
+      const destinationEl = document.querySelector('.job-header .item-details > ul');
+      destinationEl.appendChild(listItem);
     }
   }
 }

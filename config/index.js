@@ -15,3 +15,13 @@ export const itJobsPaths = [
 ];
 export const linkedInPaths = [];
 export const injectPaths = [...itJobsPaths, ...linkedInPaths];
+
+export const colors = {
+  white: '#FFF',
+  green: '#59b287',
+  red: '#fc4e03',
+  primary: '#59b287',
+  primaryFade: '#13231b',
+  darkBackground: '#101820',
+  darkForeground: '#878b8f',
+};
