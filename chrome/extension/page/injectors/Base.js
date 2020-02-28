@@ -1,12 +1,27 @@
-import { teamlyzerUrl } from '../../../../config';
+import { teamlyzerUrl, colors } from '../../../../config';
 import { getCompanyInfo } from '../data/company';
-// import teamlyzerLogo from '../../../assets/img/teamlyzer_logo.svg';
 
 export class Base {
   constructor(loader) {
     this.path = window.location.pathname;
 
     this.company = loader.loadData();
+  }
+
+  createList(elements) {
+    const list = document.createElement('ul');
+    list.style.padding = 0;
+    list.style.listStyle = 'none';
+
+    elements.forEach((el) => {
+      const item = document.createElement('li');
+      item.appendChild(el);
+      item.style.paddingTop = '4px';
+      item.style.paddingBottom = '4px';
+      list.appendChild(item);
+    });
+
+    return list;
   }
 
   getRatingColor(value) {
@@ -47,7 +62,7 @@ export class Base {
     rating.style.padding = '2px 5px';
     rating.style.fontWeight = 'bold';
     rating.style.borderRadius = '3px';
-    rating.style.color = '#FFF';
+    rating.style.color = colors.white;
     rating.innerText = this.company.rating;
 
     const maxRating = document.createElement('span');
@@ -76,9 +91,9 @@ export class Base {
     const progress = document.createElement('div');
     progress.style.height = '14px';
     progress.style.transition = 'width .6s ease';
-    progress.style.backgroundColor = '#13231b';
-    progress.style.color = '#59b287';
-    progress.style.border = '1px solid #59b287';
+    progress.style.backgroundColor = colors.primaryFade;
+    progress.style.color = colors.primary;
+    progress.style.border = `1px solid ${colors.primary}`;
     progress.style.textAlign = 'center';
     progress.style.width = `${value}%`;
     progress.style.fontSize = '10px';
@@ -86,7 +101,7 @@ export class Base {
     progress.innerText = `${Math.round(value)} / 100`;
 
     const bar = document.createElement('div');
-    bar.style.backgroundColor = '#13231b';
+    bar.style.backgroundColor = colors.primaryFade;
     bar.appendChild(progress);
 
     const container = document.createElement('div');
@@ -100,22 +115,6 @@ export class Base {
       progress,
       container,
     };
-  }
-
-  createList(elements) {
-    const list = document.createElement('ul');
-    list.style.padding = 0;
-    list.style.listStyle = 'none';
-
-    elements.forEach((el) => {
-      const item = document.createElement('li');
-      item.appendChild(el);
-      item.style.paddingTop = '4px';
-      item.style.paddingBottom = '4px';
-      list.appendChild(item);
-    });
-
-    return list;
   }
 
   getDetailsElement() {
@@ -179,6 +178,80 @@ export class Base {
     };
   }
 
+  getSalaryString(value) {
+    const number = parseFloat(value);
+    return number.toLocaleString('pt-pt', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  }
+
+  getSalaryElement() {
+    // Title
+    const title = document.createElement('span');
+    title.innerText = 'Salário previsto';
+
+    // Salary difference arrow
+    const arrow = document.createElement('i');
+    arrow.style.marginLeft = '4px';
+    if (this.company.salary.expectedMax < this.company.salary.averageMax) {
+      arrow.style.color = colors.red;
+    } else {
+      arrow.style.color = colors.green;
+    }
+
+    // Average salary
+    const minValue = this.getSalaryString(this.company.salary.expectedMin);
+    const maxValue = this.getSalaryString(this.company.salary.expectedMax);
+    const minSalary = document.createElement('span');
+    minSalary.innerText = minValue;
+    const maxSalary = document.createElement('span');
+    maxSalary.innerText = maxValue;
+
+    const salary = document.createElement('span');
+    salary.innerText = ' - ';
+    salary.prepend(minSalary);
+    salary.appendChild(maxSalary);
+    salary.appendChild(arrow);
+
+    // Market average salary
+    const averageMin = this.getSalaryString(this.company.salary.averageMin);
+    const averageMax = this.getSalaryString(this.company.salary.averageMax);
+    const averageMinSalary = document.createElement('span');
+    averageMinSalary.innerText = averageMin;
+    const averageMaxSalary = document.createElement('span');
+    averageMaxSalary.innerText = averageMax;
+
+    const averageSalaryLink = document.createElement('a');
+    averageSalaryLink.href = `${this.company.url}/salary-reviews`;
+    averageSalaryLink.innerText = ' - ';
+    averageSalaryLink.style.color = colors.primary;
+    averageSalaryLink.prepend(averageMinSalary);
+    averageSalaryLink.appendChild(averageMaxSalary);
+
+    const averageSalaryContainer = document.createElement('span');
+    averageSalaryContainer.style.fontSize = '10px';
+    averageSalaryContainer.innerText = 'Média da função ';
+    averageSalaryContainer.appendChild(averageSalaryLink);
+
+    // Container
+    const container = document.createElement('div');
+    container.appendChild(title);
+    container.appendChild(salary);
+    container.appendChild(averageSalaryContainer);
+
+    return {
+      title,
+      salary,
+      arrow,
+      container,
+      averageSalaryLink,
+      averageSalaryContainer,
+    };
+  }
+
   isCompanyPage() {
     console.warn('Method isCompanyPage not implemented');
   }
@@ -199,11 +272,16 @@ export class Base {
     console.warn('Method addJobOfferRatingToDOM not implemented');
   }
 
+  addSalaryAverageToDOM() {
+    console.warn('Method addSalaryAverageToDOM not implemented');
+  }
+
   addToDOM() {
     this.addRatingToDOM();
     this.addDetailsToDOM();
     if (this.isJobOfferPage()) {
       this.addJobOfferRatingToDOM();
+      this.addSalaryAverageToDOM();
     }
   }
 

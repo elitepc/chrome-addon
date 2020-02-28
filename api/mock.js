@@ -1,5 +1,6 @@
 export const mock = {
   rating: 2.3,
+  spamRating: 39.1214238714,
   url: 'https://pt.teamlyzer.com/companies/aubay',
   details: {
     careerOpportunity: 60.7142857143,
@@ -235,5 +236,12 @@ export const mock = {
       votes: 2,
       date: null
     }
-  ]
+  ],
+  salary: {
+    count: 4,
+    expectedMin: 864,
+    expectedMax: 1264,
+    averageMin: 964,
+    averageMax: 1400,
+  },
 };
