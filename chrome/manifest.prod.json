@@ -1,16 +1,16 @@
 {
-  "version": "0.0.0",
-  "name": "react-chrome-extension-example",
+  "version": "0.0.1",
+  "name": "Teamlyzer",
   "manifest_version": 2,
-  "description": "Example for react-chrome-extension-boilerplate",
+  "description": "Adiciona informação detalhada de cada empresa e estimativas de salário nos anúncios de emprego nas páginas do ITJobs.",
   "browser_action": {
-    "default_title": "React Chrome Extension Example",
+    "default_title": "Teamlyzer",
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "img/icon-16.png",
-    "48": "img/icon-48.png",
-    "128": "img/icon-128.png"
+    "16": "img/favicons/favicon_16_16.png",
+    "48": "img/favicons/favicon_48_48.png",
+    "128": "img/favicons/favicon_148_148.png"
   },
   "web_accessible_resources": [
     "inject.html"
@@ -18,6 +18,6 @@
   "background": {
     "page": "background.html"
   },
-  "permissions": [ "contextMenus", "tabs", "storage", "https://github.com/*" ],
-  "content_security_policy": "default-src 'self'; script-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
+  "permissions": [ "contextMenus", "tabs", "storage", "*://*.teamlyzer.com/*", "*://*.itjobs.pt/*", "*://*.linkedin.com/*", "*://*.gstatic.com/*"],
+  "content_security_policy": "default-src 'self'; script-src 'self'; connect-src https://pt.teamlyzer.com; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com"
 }

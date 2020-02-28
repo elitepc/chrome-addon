@@ -1,11 +1,13 @@
 import { red } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
+import { colors } from '../../config';
+
 const theme = createMuiTheme({
   spacing: 6,
   palette: {
     primary: {
-      main: '#556cd6',
+      main: colors.primary,
     },
     secondary: {
       main: '#19857b',
@@ -14,12 +16,12 @@ const theme = createMuiTheme({
       main: red.A400,
     },
     background: {
-      default: '#fff',
-      dark: '#0f1720',
+      default: colors.white,
+      dark: colors.darkBackground,
     },
     foreground: {
-      default: '#101820',
-      dark: '#878b8f',
+      default: colors.lightForeground,
+      dark: colors.darkForeground,
     },
   },
   typography: {
@@ -29,6 +31,13 @@ const theme = createMuiTheme({
     MuiListSubheader: {
       root: {
         color: '#878b8f'
+      },
+    },
+    MuiListItem: {
+      button: {
+        '&:hover': {
+          backgroundColor: '#0d131a',
+        }
       },
     },
     MuiListItemIcon: {
