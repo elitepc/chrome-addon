@@ -252,6 +252,17 @@ export class Base {
     };
   }
 
+  getSpamRatingElement() {
+    const rating = document.createElement('div');
+
+    const title = document.createElement('div');
+    title.innerText = '';
+
+    return {
+      rating,
+    };
+  }
+
   isCompanyPage() {
     console.warn('Method isCompanyPage not implemented');
   }

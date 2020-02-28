@@ -124,7 +124,6 @@ export class ITJobsInjector extends Base {
 
       averageSalaryContainer.classList.add('field');
 
-
       const icon = document.createElement('i');
       icon.classList.add('fa');
       icon.classList.add('fa-money');
