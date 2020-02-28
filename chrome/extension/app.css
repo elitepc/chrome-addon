@@ -21,7 +21,6 @@ button {
 
 body {
   font-size: 16px;
-  font-family: 'Work Sans', Arial, sans-serif;
   line-height: 1.4em;
   min-width: 230px;
   max-width: 280px;
@@ -31,6 +30,8 @@ body {
   -ms-font-smoothing: antialiased;
   font-smoothing: antialiased;
   font-weight: 300;
+  background-color: #101820;
+  color: #fff;
 }
 
 button,

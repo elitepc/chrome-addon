@@ -2,6 +2,7 @@ import { red } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
+  spacing: 6,
   palette: {
     primary: {
       main: '#556cd6',
@@ -19,6 +20,21 @@ const theme = createMuiTheme({
     foreground: {
       default: '#101820',
       dark: '#878b8f',
+    },
+  },
+  typography: {
+    fontFamily: ['Work Sans', 'Arial', 'sans-serif'].join(','),
+  },
+  overrides: {
+    MuiListSubheader: {
+      root: {
+        color: '#878b8f'
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: 'rgba(255, 255, 255, 0.54)',
+      },
     },
   },
 });
