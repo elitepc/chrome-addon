@@ -1,26 +1,28 @@
 import request from 'axios';
 import { teamlyzerApi } from '../config';
 
-import { mock } from './mock';
-const id = '1000';
-
-export async function getRating(filters) {
+export async function getRating({ slug }) {
   try {
-    const res = await request.get(`${teamlyzerApi.host}/rating/${id}`, {
+    const res = await request.get(`${teamlyzerApi.host}/rating-addon/${slug}`, {
       auth: teamlyzerApi.auth
     });
     if (res.data.Error) {
       return null;
     }
-    return res.data;
+    return {
+      companyId: res.data.company_id,
+      companyName: res.data.company_name,
+      rating: res.data.rating,
+      url: res.data.url,
+    };
   } catch (err) {
     throw new Error(err);
   }
 }
 
-export async function getDetailedRating(filters) {
+export async function getDetailedRating({ slug }) {
   try {
-    const res = await request.get(`${teamlyzerApi.host}/detailed-rating/${id}`, {
+    const res = await request.get(`${teamlyzerApi.host}/detailed-rating-addon/${slug}`, {
       auth: teamlyzerApi.auth
     });
     if (res.data.Error) {
@@ -39,9 +41,9 @@ export async function getDetailedRating(filters) {
   }
 }
 
-export async function getJobReviews(filters) {
+export async function getJobReviews({ slug }) {
   try {
-    const res = await request.get(`${teamlyzerApi.host}/job-reviews/${id}`, {
+    const res = await request.get(`${teamlyzerApi.host}/job-reviews-addon/${slug}`, {
       auth: teamlyzerApi.auth
     });
     if (res.data[0] && res.data[0].Error) {
@@ -60,9 +62,9 @@ export async function getJobReviews(filters) {
   }
 }
 
-export async function getInterviewReviews(filters) {
+export async function getInterviewReviews({ slug }) {
   try {
-    const res = await request.get(`${teamlyzerApi.host}/interview-reviews/${id}`, {
+    const res = await request.get(`${teamlyzerApi.host}/interview-reviews-addon/${slug}`, {
       auth: teamlyzerApi.auth
     });
     if (res.data[0] && res.data[0].Error) {
@@ -76,32 +78,52 @@ export async function getInterviewReviews(filters) {
       date: review.ts,
       url: review.url,
     }));
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function getSalaryDetails({ slug }) {
+  try {
+    const res = await request.get(`${teamlyzerApi.host}/salary-reviews-addon/${slug}`, {
+      auth: teamlyzerApi.auth
+    });
+    if (res.data.Error) {
+      return null;
+    }
+    return {
+      avgJobSalary: {
+        salaryMaxAvg: res.data.avg_job_salary.salary_max_avg,
+        salaryMinAvg: res.data.avg_job_salary.salary_min_avg,
+      },
+      avgJobSalaryIndustry: {
+        salaryMaxAvg: res.data.avg_job_salary_industry.salary_max_avg,
+        salaryMinAvg: res.data.avg_job_salary_industry.salary_min_avg,
+      },
+      companyId: res.data.company_id,
+      companyName: res.data.company_name,
+    };
   } catch (err) {
     throw new Error(err);
   }
 }
 
 export async function getCompanyDetails(filters) {
-  try {
-    const rating = await getRating(filters);
-    const detailedRating = await getDetailedRating(filters);
-    const jobReviews = await getJobReviews(filters);
-    const interviewReviews = await getInterviewReviews(filters);
-    return {
-      ...rating,
-      details: {
-        ...detailedRating,
-      },
-      jobReviews: {
-        ...jobReviews
-      },
-      interviewReviews: {
-        ...interviewReviews
-      },
-    };
-  } catch (err) {
-    return mock;
-  }
+  const [rating, details, salary] = await Promise.all([
+    getRating(filters),
+    getDetailedRating(filters),
+    // TODO: not yet developed
+    // getJobReviews(filters),
+    // getInterviewReviews(filters),
+    getSalaryDetails(filters),
+  ]);
+  return {
+    ...rating,
+    details,
+    // jobReviews,
+    // interviewReviews,
+    salary,
+  };
 }
 
 export default getCompanyDetails;

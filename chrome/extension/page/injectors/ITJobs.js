@@ -116,7 +116,7 @@ export class ITJobsInjector extends Base {
 
       arrow.classList.add('fa');
 
-      if (this.company.salary.expectedMax < this.company.salary.averageMax) {
+      if (this.company.salary.avgJobSalaryIndustry.salaryMaxAvg < this.company.salary.avgJobSalary.salaryMaxAvg) {
         arrow.classList.add('fa-long-arrow-down');
       } else {
         arrow.classList.add('fa-long-arrow-up');
