@@ -196,15 +196,15 @@ export class Base {
     // Salary difference arrow
     const arrow = document.createElement('i');
     arrow.style.marginLeft = '4px';
-    if (this.company.salary.expectedMax < this.company.salary.averageMax) {
+    if (this.company.salary.avgJobSalaryIndustry.salaryMaxAvg < this.company.salary.avgJobSalary.salaryMaxAvg) {
       arrow.style.color = colors.red;
     } else {
       arrow.style.color = colors.green;
     }
 
     // Average salary
-    const minValue = this.getSalaryString(this.company.salary.expectedMin);
-    const maxValue = this.getSalaryString(this.company.salary.expectedMax);
+    const minValue = this.getSalaryString(this.company.salary.avgJobSalary.salaryMinAvg);
+    const maxValue = this.getSalaryString(this.company.salary.avgJobSalary.salaryMaxAvg);
     const minSalary = document.createElement('span');
     minSalary.innerText = minValue;
     const maxSalary = document.createElement('span');
@@ -217,8 +217,8 @@ export class Base {
     salary.appendChild(arrow);
 
     // Market average salary
-    const averageMin = this.getSalaryString(this.company.salary.averageMin);
-    const averageMax = this.getSalaryString(this.company.salary.averageMax);
+    const averageMin = this.getSalaryString(this.company.salary.avgJobSalaryIndustry.salaryMinAvg);
+    const averageMax = this.getSalaryString(this.company.salary.avgJobSalaryIndustry.salaryMaxAvg);
     const averageMinSalary = document.createElement('span');
     averageMinSalary.innerText = averageMin;
     const averageMaxSalary = document.createElement('span');
@@ -286,16 +286,21 @@ export class Base {
   }
 
   async init() {
-    const result = await getCompanyInfo({
-      slug: this.company.slug,
-    });
+    try {
+      const result = await getCompanyInfo({
+        slug: this.company.slug,
+      });
+      console.log('result: ', result);
 
-    this.company = {
-      ...this.company,
-      ...result,
-    };
+      this.company = {
+        ...this.company,
+        ...result,
+      };
 
-    this.addToDOM();
+      this.addToDOM();
+    } catch (err) {
+      console.log('err: ', err);
+    }
   }
 }
 
