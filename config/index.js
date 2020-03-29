@@ -16,7 +16,7 @@ export const itJobsPaths = [
 export const linkedInPaths = [
   '^https?://www.linkedin.com/company(.*)',
   '^https?://www.linkedin.com/jobs/view(.*)',
-  '^https?://www.linkedin.com/search(.*)',
+  '^https?://www.linkedin.com/jobs/search(.*)',
 ];
 export const injectPaths = [...itJobsPaths, ...linkedInPaths];
 

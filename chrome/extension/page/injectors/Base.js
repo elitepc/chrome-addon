@@ -4,7 +4,10 @@ import { getCompanyInfo } from '../data/company';
 export class Base {
   constructor(loader) {
     this.path = window.location.pathname;
+    this.search = window.location.search;
     this.loader = loader;
+
+    this.injected = false;
 
     this.company = null;
 
@@ -298,8 +301,8 @@ export class Base {
   }
 
   cleanup() {
+    this.company = null;
     if (this.rating) {
-      debugger;
       this.rating.remove();
     }
     if (this.details) {
@@ -316,21 +319,19 @@ export class Base {
 
   async inject() {
     try {
-      const prevSlug = this.company && this.company.slug;
+      this.injected = true;
       const company = this.loadData();
-      if (prevSlug !== company.slug) {
-        const result = await getCompanyInfo({
-          slug: company.slug,
-        });
+      const result = await getCompanyInfo({
+        slug: company.slug,
+      });
 
-        this.company = {
-          slug: company.slug,
-          ...result,
-        };
-      }
-      this.cleanup();
+      this.company = {
+        slug: company.slug,
+        ...result,
+      };
       this.addToDOM();
     } catch (err) {
+      this.injected = false;
       console.log('err: ', err);
     }
   }

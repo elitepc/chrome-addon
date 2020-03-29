@@ -2,11 +2,11 @@ import { Base } from './Base';
 
 export class ITJobsLoader extends Base {
   isCompanyPage() {
-    return /^\/empresa\/(.*)/.test(this.path);
+    return /^\/empresa\/(.*)/.test(window.location.pathname);
   }
 
   isJobOfferPage() {
-    return /^\/oferta\/(.*)/.test(this.path);
+    return /^\/oferta\/(.*)/.test(window.location.pathname);
   }
 
   getCompanyName() {

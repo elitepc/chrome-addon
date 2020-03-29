@@ -2,12 +2,35 @@ import { colors } from '../../../../config';
 import { Base } from './Base';
 
 export class LinkedInInjector extends Base {
-  isCompanyPage() {
-    return /^\/company\/(.*)/.test(this.path);
+  constructor(loader) {
+    super(loader);
+
+    this.bootObserver = new MutationObserver(() => {
+      if (document.body.classList.contains('boot-complete')) {
+        this.cleanup();
+        this.inject();
+      }
+    });
+
+    this.searchObserver = new MutationObserver(() => {
+      const el = document.querySelector('.jobs-details-top-card__company-url');
+      if (!this.injected && el && this.isCompanyPage(el.pathname)) {
+        this.cleanup();
+        this.inject();
+      }
+    });
   }
 
-  isJobOfferPage() {
-    return /^\/jobs\/view\/(.*)/.test(this.path);
+  isCompanyPage(path) {
+    return /^\/company\/(.*)/.test(path || this.path);
+  }
+
+  isJobOfferPage(path) {
+    return /^\/jobs\/view\/(.*)/.test(path || this.path);
+  }
+
+  isSearchPage(path) {
+    return /^\/jobs\/search\/(.*)/.test(path || this.path);
   }
 
   addRatingToDOM() {
@@ -31,6 +54,11 @@ export class LinkedInInjector extends Base {
           rating.style.top = '0px';
           rating.style.left = '128px';
           rating.style.transform = 'translateY(-100%)';
+          destinationEl.prepend(rating);
+        }
+      } else if (this.isSearchPage()) {
+        const destinationEl = document.querySelector('.jobs-details-top-card__company-info');
+        if (destinationEl) {
           destinationEl.prepend(rating);
         }
       }
@@ -150,28 +178,62 @@ export class LinkedInInjector extends Base {
     }
   }
 
-  init() {
-    try {
-      if (document.body.classList.contains('boot-complete')) {
+  startSearchPageObserver() {
+    const el = document.querySelector('.jobs-search-two-pane__details');
+    this.searchObserver.observe(el, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  startBootObserver() {
+    this.bootObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  handleLocationChange() {
+    if (
+      this.path !== window.location.pathname
+      || this.search !== window.location.search
+    ) {
+      this.searchObserver.disconnect();
+      this.injected = false;
+      this.path = window.location.pathname;
+      this.search = window.location.search;
+      this.cleanup();
+
+      if (this.isSearchPage()) {
+        this.startSearchPageObserver();
+      } else {
         this.inject();
       }
+    }
+  }
 
-      // Handle page loading
-      const observer = new MutationObserver(() => {
-        this.inject();
-      });
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class']
-      });
+  init() {
+    try {
+      this.path = window.location.pathname;
+      this.search = window.location.search;
+      this.interval = setInterval(this.handleLocationChange.bind(this), 500);
 
-      // Handle location changes
-      this.interval = setInterval(async () => {
-        if (this.path !== window.location.pathname) {
-          this.path = window.location.pathname;
+      if (this.isSearchPage()) {
+        this.startSearchPageObserver();
+      }
+
+      if (document.body.classList.contains('boot-complete')) {
+        this.path = window.location.pathname;
+        this.search = window.location.search;
+        if (this.isSearchPage()) {
+          this.startSearchPageObserver();
+        } else {
+          this.cleanup();
           this.inject();
         }
-      }, 500);
+      } else {
+        this.startBootObserver();
+      }
     } catch (err) {
       console.log('err: ', err);
     }
