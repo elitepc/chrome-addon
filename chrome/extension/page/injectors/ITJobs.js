@@ -16,10 +16,14 @@ export class ITJobsInjector extends Base {
       rating.style.marginRight = '8px';
       if (this.isJobOfferPage()) {
         const destinationEl = document.querySelector('.job-header h4.thin.grey');
-        destinationEl.prepend(rating);
+        if (destinationEl) {
+          destinationEl.prepend(rating);
+        }
       } else if (this.isCompanyPage()) {
         const destinationEl = document.querySelector('.company-header h1.title');
-        destinationEl.prepend(rating);
+        if (destinationEl) {
+          destinationEl.prepend(rating);
+        }
       }
     }
   }
@@ -31,7 +35,6 @@ export class ITJobsInjector extends Base {
         heading,
         text,
         content,
-        list,
         link,
       } = this.getDetailsElement();
 
@@ -53,13 +56,6 @@ export class ITJobsInjector extends Base {
 
       content.classList.add('sidebar-content');
 
-      for (const child of list.children) {
-        const bar = child.children[0];
-        if (bar && bar.children[0]) {
-          child.children[0].children[0].color = colors.darkForeground;
-        }
-      }
-
       link.classList.add('related-more');
       link.classList.add('pull-right');
       const arrow = document.createElement('span');
@@ -73,7 +69,9 @@ export class ITJobsInjector extends Base {
 
       if (this.isJobOfferPage()) {
         const destinationEl = document.querySelector('.main-container .col-md-3.altered .col-xs-12.col-sm-12.col-md-12');
-        destinationEl.prepend(container);
+        if (destinationEl) {
+          destinationEl.prepend(container);
+        }
       } else if (this.isCompanyPage()) {
         const wrapper = document.createElement('div');
         wrapper.style.marginBottom = '20px';
@@ -87,13 +85,14 @@ export class ITJobsInjector extends Base {
         const sidebar = document.createElement('div');
         sidebar.classList.add('col-md-3');
         sidebar.classList.add('altered');
+        sidebar.prepend(wrapper);
 
         const mainRow = document.querySelector('.main-container > .row');
-        mainRow.classList.remove('col-md-12');
-        mainContainer.classList.add('col-md-9');
-        mainRow.appendChild(sidebar);
-
-        sidebar.prepend(wrapper);
+        if (mainRow) {
+          mainRow.classList.remove('col-md-12');
+          mainContainer.classList.add('col-md-9');
+          mainRow.appendChild(sidebar);
+        }
       }
     }
   }
@@ -140,6 +139,10 @@ export class ITJobsInjector extends Base {
       const destinationEl = document.querySelector('.job-header .item-details > ul');
       destinationEl.appendChild(listItem);
     }
+  }
+
+  init() {
+    this.inject();
   }
 }
 

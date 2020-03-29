@@ -4,8 +4,13 @@ import { getCompanyInfo } from '../data/company';
 export class Base {
   constructor(loader) {
     this.path = window.location.pathname;
+    this.loader = loader;
 
-    this.company = loader.loadData();
+    this.company = null;
+
+    this.rating = null;
+    this.details = null;
+    this.salary = null;
   }
 
   createList(elements) {
@@ -78,7 +83,9 @@ export class Base {
     link.target = '_blank';
     link.appendChild(rating);
 
-    return link;
+    this.rating = link;
+
+    return this.rating;
   }
 
   getProgressElement(text, value) {
@@ -87,6 +94,7 @@ export class Base {
     title.style.marginTop = 0;
     title.style.marginBottom = '4px';
     title.style.fontSize = '14px';
+    title.style.color = colors.darkForeground;
 
     const progress = document.createElement('div');
     progress.style.height = '14px';
@@ -168,7 +176,7 @@ export class Base {
     container.appendChild(heading);
     container.appendChild(content);
 
-    return {
+    this.details = {
       text,
       heading,
       content,
@@ -176,6 +184,8 @@ export class Base {
       link,
       container,
     };
+
+    return this.details;
   }
 
   getSalaryString(value) {
@@ -242,7 +252,7 @@ export class Base {
     container.appendChild(salary);
     container.appendChild(averageSalaryContainer);
 
-    return {
+    this.salary = {
       title,
       salary,
       arrow,
@@ -250,6 +260,8 @@ export class Base {
       averageSalaryLink,
       averageSalaryContainer,
     };
+
+    return this.salary;
   }
 
   isCompanyPage() {
@@ -285,22 +297,46 @@ export class Base {
     }
   }
 
-  async init() {
+  cleanup() {
+    if (this.rating) {
+      debugger;
+      this.rating.remove();
+    }
+    if (this.details) {
+      this.details.container.remove();
+    }
+    if (this.salary) {
+      this.salary.container.remove();
+    }
+  }
+
+  loadData() {
+    return this.loader.loadData();
+  }
+
+  async inject() {
     try {
-      const result = await getCompanyInfo({
-        slug: this.company.slug,
-      });
-      console.log('result: ', result);
+      const prevSlug = this.company && this.company.slug;
+      const company = this.loadData();
+      if (prevSlug !== company.slug) {
+        const result = await getCompanyInfo({
+          slug: company.slug,
+        });
 
-      this.company = {
-        ...this.company,
-        ...result,
-      };
-
+        this.company = {
+          slug: company.slug,
+          ...result,
+        };
+      }
+      this.cleanup();
       this.addToDOM();
     } catch (err) {
       console.log('err: ', err);
     }
+  }
+
+  init() {
+    console.warn('Method init not implemented');
   }
 }
 
