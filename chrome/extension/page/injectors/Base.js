@@ -1,5 +1,4 @@
 import { teamlyzerUrl, colors } from '../../../../config';
-import { getCompanyInfo } from '../data/company';
 
 export class Base {
   constructor(loader) {
@@ -325,22 +324,23 @@ export class Base {
     }
   }
 
-  loadData() {
-    return this.loader.loadData();
+  async loadData() {
+    const company = this.loader.loadData();
+    const result = await this.loader.getCompanyData({
+      slug: company.slug,
+    });
+
+    return {
+      slug: company.slug,
+      ...result,
+    };
   }
 
   async inject() {
     try {
       this.injecting = true;
-      const company = this.loadData();
-      const result = await getCompanyInfo({
-        slug: company.slug,
-      });
 
-      this.company = {
-        slug: company.slug,
-        ...result,
-      };
+      this.company = await this.loadData();
       this.addToDOM();
       this.injecting = false;
     } catch (err) {

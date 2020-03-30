@@ -1,6 +1,9 @@
+import { getCompanyInfo } from '../data/company';
+
 export class Base {
   constructor() {
     this.path = window.location.pathname;
+    this.source = null;
   }
 
   getMeta(name) {
@@ -11,6 +14,13 @@ export class Base {
         return meta.getAttribute('content');
       }
     }
+  }
+
+  getCompanyData(company) {
+    return getCompanyInfo({
+      slug: company.slug,
+      source: this.source,
+    });
   }
 }
 

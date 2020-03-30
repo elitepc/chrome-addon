@@ -1,6 +1,11 @@
 import { Base } from './Base';
 
 export class LandingJobsLoader extends Base {
+  constructor() {
+    super();
+    this.source = 'landingjobs';
+  }
+
   isCompanyPage() {
     const path = window.location.pathname;
     const parts = path.split('/');

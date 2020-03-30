@@ -1,6 +1,11 @@
 import { Base } from './Base';
 
 export class LinkedInLoader extends Base {
+  constructor() {
+    super();
+    this.source = 'linkedin';
+  }
+
   isCompanyPage() {
     return /^\/company\/(.*)/.test(window.location.pathname);
   }

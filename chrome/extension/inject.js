@@ -1,5 +1,5 @@
 import { itJobsPaths, linkedInPaths, landingJobsPaths } from '../../config';
-import { ITJobsLoader, LinkedInLoader, LandingJobsLoader } from './page/scrappers';
+import { ITJobsLoader, LinkedInLoader, LandingJobsLoader } from './page/loaders';
 import { ITJobsInjector, LinkedInInjector, LandingJobsInjector } from './page/injectors';
 
 const getLoader = () => {
