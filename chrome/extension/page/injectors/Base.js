@@ -137,7 +137,7 @@ export class Base {
   getDetailsElement() {
     // Create Heading
     const logo = document.createElement('img');
-    logo.src = `${teamlyzerUrl}/static/img/teamlyzer_logo.svg`;
+    logo.src = `${teamlyzerUrl}/static/img/teamlyzer_logo_blue.svg`;
     logo.alt = 'Teamlyzer';
     const text = document.createElement('div');
     text.appendChild(logo);
@@ -333,7 +333,6 @@ export class Base {
     try {
       this.injecting = true;
       const company = this.loadData();
-      console.log('company.slug: ', company.slug);
       const result = await getCompanyInfo({
         slug: company.slug,
       });

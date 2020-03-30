@@ -1,5 +1,4 @@
 import debounce from 'lodash/debounce';
-import { colors } from '../../../../config';
 import { Base } from './Base';
 
 export class LandingJobsInjector extends Base {
@@ -19,13 +18,13 @@ export class LandingJobsInjector extends Base {
       if (!loadingElement && pageChangeLoader.classList.contains('lj-spinner--stopped')) {
         this.isLoading = false;
         if (
-          (this.isCompanyPage() && !this.ratingInjected)
+          (this.isCompanyPage() && !this.ratingInjected && !this.detailsInjected && !this.injecting)
         ) {
           this.cleanup();
           this.inject();
         }
         if (
-          (this.isJobOfferPage() && !this.ratingInjected)
+          (this.isJobOfferPage() && !this.ratingInjected && !this.salaryInjected && !this.detailsInjected && !this.injecting)
         ) {
           this.cleanup();
           this.inject();
@@ -218,10 +217,9 @@ export class LandingJobsInjector extends Base {
       this.path = window.location.pathname;
       this.search = window.location.search;
 
-      if (!this.isLoading) {
-        this.cleanup();
-        this.inject();
-      }
+      this.cleanup();
+      this.bootObserver.disconnect();
+      this.startBootObserver();
     }
   }
 
