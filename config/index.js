@@ -10,10 +10,14 @@ export const teamlyzerApi = {
 
 
 export const itJobsPaths = [
-  '^https?:\/\/www\.itjobs\.pt/empresa(.*)',
-  '^https?:\/\/www\.itjobs\.pt/oferta(.*)',
+  '^https?://www.itjobs.pt/empresa(.*)',
+  '^https?://www.itjobs.pt/oferta(.*)',
 ];
-export const linkedInPaths = [];
+export const linkedInPaths = [
+  '^https?://www.linkedin.com/company(.*)',
+  '^https?://www.linkedin.com/jobs/view(.*)',
+  '^https?://www.linkedin.com/jobs/search(.*)',
+];
 export const injectPaths = [...itJobsPaths, ...linkedInPaths];
 
 export const colors = {
@@ -24,6 +28,6 @@ export const colors = {
   primaryFade: '#13231b',
   darkBackground: '#101820',
   darkForeground: '#878b8f',
-  lightBackground: '#fff',
-  lightForeground: '#101820',
+  lightBackground: '#FFF',
+  lightForeground: '#FFF',
 };

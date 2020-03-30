@@ -4,8 +4,16 @@ import { getCompanyInfo } from '../data/company';
 export class Base {
   constructor(loader) {
     this.path = window.location.pathname;
+    this.search = window.location.search;
+    this.loader = loader;
 
-    this.company = loader.loadData();
+    this.injected = false;
+
+    this.company = null;
+
+    this.rating = null;
+    this.details = null;
+    this.salary = null;
   }
 
   createList(elements) {
@@ -59,15 +67,18 @@ export class Base {
     rating.style.backgroundColor = this.getRatingColor(this.company.rating);
     rating.style.textAlign = 'center';
     rating.style.fontSize = '25px';
-    rating.style.padding = '2px 5px';
+    rating.style.lineHeight = '1em';
+    rating.style.padding = '3px 5px';
     rating.style.fontWeight = 'bold';
     rating.style.borderRadius = '3px';
+    rating.style.verticalAlign = 'middle';
     rating.style.color = colors.white;
     rating.innerText = this.company.rating;
 
     const maxRating = document.createElement('span');
     maxRating.style.fontSize = '16px';
     maxRating.style.fontWeight = 'normal';
+    maxRating.style.lineHeight = '1em';
     maxRating.style.opacity = '0.7';
     maxRating.innerText = '/5';
 
@@ -76,9 +87,12 @@ export class Base {
     const link = document.createElement('a');
     link.href = this.company.url;
     link.target = '_blank';
+    link.style.display = 'inline-block';
     link.appendChild(rating);
 
-    return link;
+    this.rating = link;
+
+    return this.rating;
   }
 
   getProgressElement(text, value) {
@@ -87,6 +101,7 @@ export class Base {
     title.style.marginTop = 0;
     title.style.marginBottom = '4px';
     title.style.fontSize = '14px';
+    title.style.color = colors.darkForeground;
 
     const progress = document.createElement('div');
     progress.style.height = '14px';
@@ -168,7 +183,7 @@ export class Base {
     container.appendChild(heading);
     container.appendChild(content);
 
-    return {
+    this.details = {
       text,
       heading,
       content,
@@ -176,6 +191,8 @@ export class Base {
       link,
       container,
     };
+
+    return this.details;
   }
 
   getSalaryString(value) {
@@ -198,8 +215,10 @@ export class Base {
     arrow.style.marginLeft = '4px';
     if (this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg) {
       arrow.style.color = colors.red;
+      arrow.innerHTML = '&darr;';
     } else {
       arrow.style.color = colors.green;
+      arrow.innerHTML = '&uarr;';
     }
 
     // Average salary
@@ -233,7 +252,7 @@ export class Base {
 
     const averageSalaryContainer = document.createElement('span');
     averageSalaryContainer.style.fontSize = '10px';
-    averageSalaryContainer.innerText = 'Média da função ';
+    averageSalaryContainer.innerText = 'Média da indústria ';
     averageSalaryContainer.appendChild(averageSalaryLink);
 
     // Container
@@ -242,7 +261,7 @@ export class Base {
     container.appendChild(salary);
     container.appendChild(averageSalaryContainer);
 
-    return {
+    this.salary = {
       title,
       salary,
       arrow,
@@ -250,6 +269,8 @@ export class Base {
       averageSalaryLink,
       averageSalaryContainer,
     };
+
+    return this.salary;
   }
 
   isCompanyPage() {
@@ -285,22 +306,44 @@ export class Base {
     }
   }
 
-  async init() {
+  cleanup() {
+    this.company = null;
+    if (this.rating) {
+      this.rating.remove();
+    }
+    if (this.details) {
+      this.details.container.remove();
+    }
+    if (this.salary) {
+      this.salary.container.remove();
+    }
+  }
+
+  loadData() {
+    return this.loader.loadData();
+  }
+
+  async inject() {
     try {
+      this.injected = true;
+      const company = this.loadData();
       const result = await getCompanyInfo({
-        slug: this.company.slug,
+        slug: company.slug,
       });
-      console.log('result: ', result);
 
       this.company = {
-        ...this.company,
+        slug: company.slug,
         ...result,
       };
-
       this.addToDOM();
     } catch (err) {
+      this.injected = false;
       console.log('err: ', err);
     }
+  }
+
+  init() {
+    console.warn('Method init not implemented');
   }
 }
 
