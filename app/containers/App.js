@@ -40,8 +40,9 @@ export const App = () => {
           <ListSubheader
             component="div"
             id="nested-list-subheader"
+            className={classes.header}
           >
-            Ações
+            <img src={`${teamlyzerUrl}/static/img/teamlyzer_logo.svg`} alt="Teamlyzer" />
           </ListSubheader>
         )}
       >
@@ -62,7 +63,7 @@ export const App = () => {
               <ListItemIcon>
                 <StopIcon color="error" />
               </ListItemIcon>
-              <ListItemText primary="Criar review de emprego" />
+              <ListItemText classes={{ primary: classes.nestedText }} primary="Criar review de emprego" />
             </ListItem>
             <ListItem
               button
@@ -72,7 +73,7 @@ export const App = () => {
               <ListItemIcon>
                 <StopIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Criar review de entrevista" />
+              <ListItemText classes={{ primary: classes.nestedText }} primary="Criar review de entrevista" />
             </ListItem>
           </List>
         </Collapse>

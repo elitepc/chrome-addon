@@ -19,5 +19,5 @@
     "page": "background.html"
   },
   "permissions": [ "contextMenus", "tabs", "storage", "*://*.teamlyzer.com/*", "*://*.itjobs.pt/*", "*://*.linkedin.com/*", "*://landing.jobs/*", "*://*.gstatic.com/*"],
-  "content_security_policy": "default-src 'self'; script-src 'self'; connect-src https://pt.teamlyzer.com; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com"
+  "content_security_policy": "default-src 'self'; script-src 'self'; connect-src https://pt.teamlyzer.com; style-src * 'unsafe-inline' 'self' blob:; img-src https://pt.teamlyzer.com 'self' data:; font-src 'self' https://fonts.gstatic.com"
 }
