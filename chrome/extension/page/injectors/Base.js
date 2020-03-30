@@ -258,6 +258,7 @@ export class Base {
 
     // Container
     const container = document.createElement('div');
+    container.style.lineHeight = '1em';
     container.appendChild(title);
     container.appendChild(salary);
     container.appendChild(averageSalaryContainer);
@@ -332,6 +333,7 @@ export class Base {
     try {
       this.injecting = true;
       const company = this.loadData();
+      console.log('company.slug: ', company.slug);
       const result = await getCompanyInfo({
         slug: company.slug,
       });

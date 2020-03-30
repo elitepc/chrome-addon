@@ -14,11 +14,12 @@ export const itJobsPaths = [
   '^https?://www.itjobs.pt/oferta(.*)',
 ];
 export const linkedInPaths = [
-  '^https?://www.linkedin.com/company(.*)',
-  '^https?://www.linkedin.com/jobs/view(.*)',
-  '^https?://www.linkedin.com/jobs/search(.*)',
+  '^https?://www.linkedin.com/(.*)',
 ];
-export const injectPaths = [...itJobsPaths, ...linkedInPaths];
+export const landingJobsPaths = [
+  '^https?://landing.jobs/(.*)',
+];
+export const injectPaths = [...itJobsPaths, ...linkedInPaths, ...landingJobsPaths];
 
 export const colors = {
   white: '#FFF',

@@ -52,7 +52,7 @@ export class LinkedInInjector extends Base {
   startBootObserver() {
     this.bootObserver.observe(document.body, {
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ['class'],
     });
   }
 
@@ -159,13 +159,6 @@ export class LinkedInInjector extends Base {
       list.classList.add('p3');
       list.style.boxShadow = '0 0 0 1px rgba(0,0,0,.15)';
 
-      for (const child of list.children) {
-        const bar = child.children[0];
-        if (bar && !bar.children[0]) {
-          child.style.borderColor = 'rgba(0,0,0,.15)';
-        }
-      }
-
       link.classList.add('t-14');
       link.classList.add('t-black--light');
       link.classList.add('t-bold');
@@ -254,7 +247,6 @@ export class LinkedInInjector extends Base {
       || this.search !== window.location.search
     ) {
       this.searchObserver.disconnect();
-      this.injected = false;
       this.path = window.location.pathname;
       this.search = window.location.search;
       this.cleanup();
@@ -278,8 +270,6 @@ export class LinkedInInjector extends Base {
       }
 
       if (document.body.classList.contains('boot-complete')) {
-        this.path = window.location.pathname;
-        this.search = window.location.search;
         if (this.isSearchPage()) {
           this.startSearchPageObserver();
         } else {
