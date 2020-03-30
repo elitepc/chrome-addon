@@ -214,6 +214,7 @@ export class Base {
     // Salary difference arrow
     const arrow = document.createElement('i');
     arrow.style.marginLeft = '4px';
+
     if (this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg) {
       arrow.style.color = colors.red;
       arrow.innerHTML = '&darr;';
