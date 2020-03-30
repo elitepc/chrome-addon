@@ -1,5 +1,4 @@
 import { teamlyzerUrl, colors } from '../../../../config';
-import { getCompanyInfo } from '../data/company';
 
 export class Base {
   constructor(loader) {
@@ -137,7 +136,7 @@ export class Base {
   getDetailsElement() {
     // Create Heading
     const logo = document.createElement('img');
-    logo.src = `${teamlyzerUrl}/static/img/teamlyzer_logo.svg`;
+    logo.src = `${teamlyzerUrl}/static/img/teamlyzer_logo_blue.svg`;
     logo.alt = 'Teamlyzer';
     const text = document.createElement('div');
     text.appendChild(logo);
@@ -258,6 +257,7 @@ export class Base {
 
     // Container
     const container = document.createElement('div');
+    container.style.lineHeight = '1em';
     container.appendChild(title);
     container.appendChild(salary);
     container.appendChild(averageSalaryContainer);
@@ -324,22 +324,23 @@ export class Base {
     }
   }
 
-  loadData() {
-    return this.loader.loadData();
+  async loadData() {
+    const company = this.loader.loadData();
+    const result = await this.loader.getCompanyData({
+      slug: company.slug,
+    });
+
+    return {
+      slug: company.slug,
+      ...result,
+    };
   }
 
   async inject() {
     try {
       this.injecting = true;
-      const company = this.loadData();
-      const result = await getCompanyInfo({
-        slug: company.slug,
-      });
 
-      this.company = {
-        slug: company.slug,
-        ...result,
-      };
+      this.company = await this.loadData();
       this.addToDOM();
       this.injecting = false;
     } catch (err) {

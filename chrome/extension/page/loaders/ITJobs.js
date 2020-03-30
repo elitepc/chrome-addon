@@ -1,6 +1,11 @@
 import { Base } from './Base';
 
 export class ITJobsLoader extends Base {
+  constructor() {
+    super();
+    this.source = 'itjobs';
+  }
+
   isCompanyPage() {
     return /^\/empresa\/(.*)/.test(window.location.pathname);
   }

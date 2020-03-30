@@ -1,10 +1,13 @@
 import request from 'axios';
 import { teamlyzerApi } from '../config';
 
-export async function getRating({ slug }) {
+export async function getRating({ slug, source }) {
   try {
     const res = await request.get(`${teamlyzerApi.host}/rating-addon/${slug}`, {
-      auth: teamlyzerApi.auth
+      auth: teamlyzerApi.auth,
+      params: {
+        source,
+      }
     });
     if (res.data.Error) {
       return null;
@@ -20,10 +23,13 @@ export async function getRating({ slug }) {
   }
 }
 
-export async function getDetailedRating({ slug }) {
+export async function getDetailedRating({ slug, source }) {
   try {
     const res = await request.get(`${teamlyzerApi.host}/detailed-rating-addon/${slug}`, {
-      auth: teamlyzerApi.auth
+      auth: teamlyzerApi.auth,
+      params: {
+        source,
+      }
     });
     if (res.data.Error) {
       return null;
@@ -41,10 +47,13 @@ export async function getDetailedRating({ slug }) {
   }
 }
 
-export async function getJobReviews({ slug }) {
+export async function getJobReviews({ slug, source }) {
   try {
     const res = await request.get(`${teamlyzerApi.host}/job-reviews-addon/${slug}`, {
-      auth: teamlyzerApi.auth
+      auth: teamlyzerApi.auth,
+      params: {
+        source,
+      }
     });
     if (res.data[0] && res.data[0].Error) {
       return null;
@@ -62,10 +71,13 @@ export async function getJobReviews({ slug }) {
   }
 }
 
-export async function getInterviewReviews({ slug }) {
+export async function getInterviewReviews({ slug, source }) {
   try {
     const res = await request.get(`${teamlyzerApi.host}/interview-reviews-addon/${slug}`, {
-      auth: teamlyzerApi.auth
+      auth: teamlyzerApi.auth,
+      params: {
+        source,
+      }
     });
     if (res.data[0] && res.data[0].Error) {
       return null;
@@ -83,10 +95,13 @@ export async function getInterviewReviews({ slug }) {
   }
 }
 
-export async function getSalaryDetails({ slug }) {
+export async function getSalaryDetails({ slug, source }) {
   try {
     const res = await request.get(`${teamlyzerApi.host}/salary-reviews-addon/${slug}`, {
-      auth: teamlyzerApi.auth
+      auth: teamlyzerApi.auth,
+      params: {
+        source,
+      }
     });
     if (res.data.Error) {
       return null;

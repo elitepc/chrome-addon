@@ -1,6 +1,6 @@
-import { itJobsPaths, linkedInPaths } from '../../config';
-import { ITJobsLoader, LinkedInLoader } from './page/scrappers';
-import { ITJobsInjector, LinkedInInjector } from './page/injectors';
+import { itJobsPaths, linkedInPaths, landingJobsPaths } from '../../config';
+import { ITJobsLoader, LinkedInLoader, LandingJobsLoader } from './page/loaders';
+import { ITJobsInjector, LinkedInInjector, LandingJobsInjector } from './page/injectors';
 
 const getLoader = () => {
   if (window.location.href.match(itJobsPaths.join('|'))) {
@@ -8,6 +8,9 @@ const getLoader = () => {
   }
   if (window.location.href.match(linkedInPaths.join('|'))) {
     return new LinkedInLoader();
+  }
+  if (window.location.href.match(landingJobsPaths.join('|'))) {
+    return new LandingJobsLoader();
   }
 };
 
@@ -17,6 +20,9 @@ const getInjector = (loader) => {
   }
   if (window.location.href.match(linkedInPaths.join('|'))) {
     return new LinkedInInjector(loader);
+  }
+  if (window.location.href.match(landingJobsPaths.join('|'))) {
+    return new LandingJobsInjector(loader);
   }
 };
 
