@@ -7,7 +7,10 @@ export class Base {
     this.search = window.location.search;
     this.loader = loader;
 
-    this.injected = false;
+    this.injecting = false;
+    this.ratingInjected = false;
+    this.detailsInjected = false;
+    this.salaryInjected = false;
 
     this.company = null;
 
@@ -101,13 +104,12 @@ export class Base {
     title.style.marginTop = 0;
     title.style.marginBottom = '4px';
     title.style.fontSize = '14px';
-    title.style.color = colors.darkForeground;
 
     const progress = document.createElement('div');
     progress.style.height = '14px';
     progress.style.transition = 'width .6s ease';
-    progress.style.backgroundColor = colors.primaryFade;
-    progress.style.color = colors.primary;
+    progress.style.backgroundColor = colors.primary;
+    progress.style.color = colors.white;
     progress.style.border = `1px solid ${colors.primary}`;
     progress.style.textAlign = 'center';
     progress.style.width = `${value}%`;
@@ -167,7 +169,7 @@ export class Base {
     breakEl.setAttribute('role', 'separator');
     breakEl.style.marginTop = '16px';
     breakEl.style.marginBottom = '14px';
-    breakEl.style.borderTop = '1px solid hsla(0,0%,96.1%,.1)';
+    breakEl.style.borderTop = '1px solid rgba(0, 0, 0, 0.15)';
     list.insertBefore(breakEl, list.children[5]);
 
     // Add Link
@@ -251,7 +253,6 @@ export class Base {
     averageSalaryLink.appendChild(averageMaxSalary);
 
     const averageSalaryContainer = document.createElement('span');
-    averageSalaryContainer.style.fontSize = '10px';
     averageSalaryContainer.innerText = 'Média da indústria ';
     averageSalaryContainer.appendChild(averageSalaryLink);
 
@@ -307,6 +308,10 @@ export class Base {
   }
 
   cleanup() {
+    this.injecting = false;
+    this.ratingInjected = false;
+    this.detailsInjected = false;
+    this.salaryInjected = false;
     this.company = null;
     if (this.rating) {
       this.rating.remove();
@@ -325,7 +330,7 @@ export class Base {
 
   async inject() {
     try {
-      this.injected = true;
+      this.injecting = true;
       const company = this.loadData();
       const result = await getCompanyInfo({
         slug: company.slug,
@@ -336,8 +341,9 @@ export class Base {
         ...result,
       };
       this.addToDOM();
+      this.injecting = false;
     } catch (err) {
-      this.injected = false;
+      this.injecting = false;
       console.log('err: ', err);
     }
   }

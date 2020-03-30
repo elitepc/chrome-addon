@@ -1,4 +1,3 @@
-import { colors } from '../../../../config';
 import { Base } from './Base';
 
 export class ITJobsInjector extends Base {
@@ -18,11 +17,13 @@ export class ITJobsInjector extends Base {
         const destinationEl = document.querySelector('.job-header h4.thin.grey');
         if (destinationEl) {
           destinationEl.prepend(rating);
+          this.ratingInjected = true;
         }
       } else if (this.isCompanyPage()) {
         const destinationEl = document.querySelector('.company-header h1.title');
         if (destinationEl) {
           destinationEl.prepend(rating);
+          this.ratingInjected = true;
         }
       }
     }
@@ -40,19 +41,12 @@ export class ITJobsInjector extends Base {
 
       container.classList.add('block');
       container.classList.add('sidebar');
-      container.style.backgroundColor = '#111821';
-      container.style.borderColor = '#222c36';
-      container.style.boxShadow = '0 3px 0 0 rgba(34,44,54,.8)';
 
       heading.classList.add('heading');
-      heading.style.backgroundColor = 'transparent';
 
       text.classList.add('heading-title');
       text.classList.add('sidebar-text');
       text.classList.add('pull-left');
-      text.style.backgroundColor = '#13231b';
-      text.style.color = colors.primary;
-      text.style.border = `1px solid ${colors.primary}`;
 
       content.classList.add('sidebar-content');
 
@@ -71,6 +65,7 @@ export class ITJobsInjector extends Base {
         const destinationEl = document.querySelector('.main-container .col-md-3.altered .col-xs-12.col-sm-12.col-md-12');
         if (destinationEl) {
           destinationEl.prepend(container);
+          this.detailsInjected = true;
         }
       } else if (this.isCompanyPage()) {
         const wrapper = document.createElement('div');
@@ -92,6 +87,7 @@ export class ITJobsInjector extends Base {
           mainRow.classList.remove('col-md-12');
           mainContainer.classList.add('col-md-9');
           mainRow.appendChild(sidebar);
+          this.detailsInjected = true;
         }
       }
     }
@@ -112,6 +108,7 @@ export class ITJobsInjector extends Base {
 
       salary.classList.add('field');
 
+      averageSalaryContainer.style.fontSize = '13px';
       averageSalaryContainer.classList.add('field');
 
       const icon = document.createElement('i');
@@ -128,10 +125,12 @@ export class ITJobsInjector extends Base {
 
       const destinationEl = document.querySelector('.job-header .item-details > ul');
       destinationEl.appendChild(listItem);
+      this.salaryInjected = true;
     }
   }
 
   init() {
+    this.cleanup();
     this.inject();
   }
 }
