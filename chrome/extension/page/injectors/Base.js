@@ -67,15 +67,18 @@ export class Base {
     rating.style.backgroundColor = this.getRatingColor(this.company.rating);
     rating.style.textAlign = 'center';
     rating.style.fontSize = '25px';
-    rating.style.padding = '2px 5px';
+    rating.style.lineHeight = '1em';
+    rating.style.padding = '3px 5px';
     rating.style.fontWeight = 'bold';
     rating.style.borderRadius = '3px';
+    rating.style.verticalAlign = 'middle';
     rating.style.color = colors.white;
     rating.innerText = this.company.rating;
 
     const maxRating = document.createElement('span');
     maxRating.style.fontSize = '16px';
     maxRating.style.fontWeight = 'normal';
+    maxRating.style.lineHeight = '1em';
     maxRating.style.opacity = '0.7';
     maxRating.innerText = '/5';
 
@@ -84,6 +87,7 @@ export class Base {
     const link = document.createElement('a');
     link.href = this.company.url;
     link.target = '_blank';
+    link.style.display = 'inline-block';
     link.appendChild(rating);
 
     this.rating = link;
@@ -211,8 +215,10 @@ export class Base {
     arrow.style.marginLeft = '4px';
     if (this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg) {
       arrow.style.color = colors.red;
+      arrow.innerHTML = '&darr;';
     } else {
       arrow.style.color = colors.green;
+      arrow.innerHTML = '&uarr;';
     }
 
     // Average salary
@@ -246,7 +252,7 @@ export class Base {
 
     const averageSalaryContainer = document.createElement('span');
     averageSalaryContainer.style.fontSize = '10px';
-    averageSalaryContainer.innerText = 'Média da função ';
+    averageSalaryContainer.innerText = 'Média da indústria ';
     averageSalaryContainer.appendChild(averageSalaryLink);
 
     // Container

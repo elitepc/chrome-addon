@@ -103,7 +103,6 @@ export class ITJobsInjector extends Base {
         container,
         title,
         salary,
-        arrow,
         averageSalaryContainer,
       } = this.getSalaryElement();
 
@@ -113,16 +112,7 @@ export class ITJobsInjector extends Base {
 
       salary.classList.add('field');
 
-      arrow.classList.add('fa');
-
-      if (this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg) {
-        arrow.classList.add('fa-long-arrow-down');
-      } else {
-        arrow.classList.add('fa-long-arrow-up');
-      }
-
       averageSalaryContainer.classList.add('field');
-
 
       const icon = document.createElement('i');
       icon.classList.add('fa');

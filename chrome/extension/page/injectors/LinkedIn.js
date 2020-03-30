@@ -33,6 +33,19 @@ export class LinkedInInjector extends Base {
     return /^\/jobs\/search\/(.*)/.test(path || this.path);
   }
 
+  addToDOM() {
+    this.addRatingToDOM();
+    if (this.isJobOfferPage()) {
+      this.addJobOfferRatingToDOM();
+    }
+    if (this.isJobOfferPage() || this.isCompanyPage()) {
+      this.addDetailsToDOM();
+    }
+    if (this.isJobOfferPage() || this.isSearchPage()) {
+      this.addSalaryAverageToDOM();
+    }
+  }
+
   addRatingToDOM() {
     if (this.company.rating && this.company.url) {
       const rating = this.getRatingElement();
@@ -43,7 +56,6 @@ export class LinkedInInjector extends Base {
           rating.style.position = 'absolute';
           rating.style.top = '86px';
           rating.style.left = '112px';
-          rating.style.transform = 'translateY(-50%)';
           destinationEl.prepend(rating);
         }
       } else if (this.isCompanyPage()) {
@@ -143,7 +155,6 @@ export class LinkedInInjector extends Base {
         container,
         title,
         salary,
-        arrow,
         averageSalaryContainer,
       } = this.getSalaryElement();
 
@@ -151,7 +162,6 @@ export class LinkedInInjector extends Base {
       title.classList.add('mb1');
       title.style.display = 'block';
 
-      container.classList.add('mt1');
       container.style.lineHeight = '1em';
 
       salary.style.display = 'block';
@@ -159,21 +169,24 @@ export class LinkedInInjector extends Base {
 
       averageSalaryContainer.style.lineHeight = '1em';
 
-      if (this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg) {
-        arrow.classList.add('fa-long-arrow-down');
-        arrow.innerHTML = '&darr;';
-      } else {
-        arrow.classList.add('fa-long-arrow-up');
-        arrow.innerHTML = '&uarr;';
-      }
-
       const item = document.createElement('div');
       item.classList.add('job-flavors__flavor');
       item.appendChild(container);
 
-      const destinationEl = document.querySelector('.jobs-top-card__flavors');
-      if (destinationEl) {
-        destinationEl.appendChild(item);
+      if (this.isJobOfferPage()) {
+        container.classList.add('mt1');
+
+        const destinationEl = document.querySelector('.jobs-top-card__flavors');
+        if (destinationEl) {
+          destinationEl.appendChild(item);
+        }
+      } else if (this.isSearchPage()) {
+        container.classList.add('mr3');
+
+        const destinationEl = document.querySelector('.jobs-details-top-card__actions');
+        if (destinationEl) {
+          destinationEl.prepend(item);
+        }
       }
     }
   }
