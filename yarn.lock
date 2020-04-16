@@ -875,6 +875,11 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
+"@popperjs/core@^2.2.0":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.3.3.tgz#8731722aeb7330e8fd9eb5d424be6b98dea7d6da"
+  integrity sha512-yEvVC8RfhRPkD9TUn7cFcLcgoJePgZRAOR7T21rcRY5I8tpuhzeWfGa7We7tB14fe9R7wENdqUABcMdwD4SQLw==
+
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.6.0", "@sinonjs/commons@^1.7.0":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.7.1.tgz#da5fd19a5f71177a53778073978873964f49acf1"
@@ -7246,6 +7251,13 @@ tiny-warning@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
+
+tippy.js@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.1.1.tgz#9ed09aa4f9c47fb06a0e280e03055f898f5ddfff"
+  integrity sha512-Sk+FPihack9XFbPOc2jRbn6iRLA9my2a8qhaGY6wwD3EeW57/xY5PAPkZOutKVYDWLyNZ/laCkJqg7QJG/gqQw==
+  dependencies:
+    "@popperjs/core" "^2.2.0"
 
 tmp@0.0.30:
   version "0.0.30"

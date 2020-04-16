@@ -100,6 +100,7 @@ export class ITJobsInjector extends Base {
         title,
         salary,
         averageSalaryContainer,
+        range,
       } = this.getSalaryElement();
 
       container.classList.add('info');
@@ -123,8 +124,12 @@ export class ITJobsInjector extends Base {
       listItem.appendChild(iconWrapper);
       listItem.appendChild(container);
 
+      const rangeListItem = document.createElement('li');
+      rangeListItem.appendChild(range.container);
+
       const destinationEl = document.querySelector('.job-header .item-details > ul');
       destinationEl.appendChild(listItem);
+      destinationEl.appendChild(rangeListItem);
       this.salaryInjected = true;
     }
   }

@@ -115,6 +115,11 @@ export async function getSalaryDetails({ slug, source }) {
         salaryMaxAvg: res.data.avg_job_salary_industry.salary_max_avg,
         salaryMinAvg: res.data.avg_job_salary_industry.salary_min_avg,
       },
+      salaryCompanyDetails: {
+        salaryMin: 1508,
+        salaryMax: 1308,
+        salaryMedian: 1000
+      },
       companyId: res.data.company_id,
       companyName: res.data.company_name,
     };
