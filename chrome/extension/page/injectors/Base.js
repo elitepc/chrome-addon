@@ -322,6 +322,12 @@ export class Base {
     salary.appendChild(maxSalary);
     salary.appendChild(arrow);
 
+    const salaryLink = document.createElement('a');
+    salaryLink.href = `${this.company.url}/salary-reviews`;
+    salaryLink.target = '_blank';
+    salaryLink.style.color = 'inherit';
+    salaryLink.appendChild(salary);
+
     // Market average salary
     const averageMin = this.getSalaryString(this.company.salary.avgJobSalaryIndustry.salaryMinAvg);
     const averageMax = this.getSalaryString(this.company.salary.avgJobSalaryIndustry.salaryMaxAvg);
@@ -331,7 +337,7 @@ export class Base {
     averageMaxSalary.innerText = averageMax;
 
     const averageSalaryLink = document.createElement('a');
-    averageSalaryLink.href = `${this.company.url}/salary-reviews`;
+    averageSalaryLink.href = `${teamlyzerUrl}/companies/industries/${this.company.industrySlug}`;
     averageSalaryLink.target = '_blank';
     averageSalaryLink.innerText = ' - ';
     averageSalaryLink.style.color = colors.primary;
@@ -346,7 +352,7 @@ export class Base {
     const container = document.createElement('div');
     container.style.lineHeight = '1em';
     container.appendChild(title);
-    container.appendChild(salary);
+    container.appendChild(salaryLink);
     container.appendChild(averageSalaryContainer);
 
     const range = this.getSalaryRange();
@@ -354,6 +360,7 @@ export class Base {
     this.salary = {
       title,
       salary,
+      salaryLink,
       arrow,
       container,
       averageSalaryLink,

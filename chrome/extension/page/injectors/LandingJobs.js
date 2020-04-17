@@ -123,7 +123,7 @@ export class LandingJobsInjector extends Base {
       const {
         container,
         title,
-        salary,
+        salaryLink,
         averageSalaryContainer,
         range,
       } = this.getSalaryElement();
@@ -135,11 +135,11 @@ export class LandingJobsInjector extends Base {
       container.style.marginTop = '8px';
       container.classList.add('ld-metatag');
 
-      salary.style.display = 'inline-block';
-      salary.style.lineHeight = '1em';
-      salary.style.fontSize = '1.1rem';
-      salary.style.marginTop = '2px';
-      salary.style.marginBottom = '2px';
+      salaryLink.style.display = 'inline-block';
+      salaryLink.style.lineHeight = '1em';
+      salaryLink.style.fontSize = '1.1rem';
+      salaryLink.style.marginTop = '2px';
+      salaryLink.style.marginBottom = '2px';
 
       averageSalaryContainer.style.display = 'block';
       averageSalaryContainer.style.fontSize = '11px';
@@ -192,7 +192,7 @@ export class LandingJobsInjector extends Base {
 
 
       const content = document.createElement('div');
-      content.appendChild(salary);
+      content.appendChild(salaryLink);
       content.appendChild(averageSalaryContainer);
 
       container.prepend(icon);

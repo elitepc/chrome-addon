@@ -120,6 +120,8 @@ export async function getSalaryDetails({ slug, source }) {
         salaryMax: 1308,
         salaryMedian: 1000
       },
+      industryName: res.data.industry,
+      industrySlug: res.data.industry_slug,
       companyId: res.data.company_id,
       companyName: res.data.company_name,
     };
@@ -129,7 +131,7 @@ export async function getSalaryDetails({ slug, source }) {
 }
 
 export async function getCompanyDetails(filters) {
-  const [rating, details, salary] = await Promise.all([
+  const [rating, details, { industryName, industrySlug, ...salary }] = await Promise.all([
     getRating(filters),
     getDetailedRating(filters),
     // TODO: not yet developed
@@ -139,6 +141,8 @@ export async function getCompanyDetails(filters) {
   ]);
   return {
     ...rating,
+    industrySlug,
+    industryName,
     details,
     // jobReviews,
     // interviewReviews,
