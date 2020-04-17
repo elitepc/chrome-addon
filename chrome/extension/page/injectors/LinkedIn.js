@@ -196,14 +196,14 @@ export class LinkedInInjector extends Base {
       const {
         container,
         title,
-        salary,
+        salaryLink,
         averageSalaryContainer,
         range,
       } = this.getSalaryElement();
 
       const wrapper = document.createElement('div');
       wrapper.appendChild(title);
-      wrapper.appendChild(salary);
+      wrapper.appendChild(salaryLink);
       wrapper.appendChild(averageSalaryContainer);
 
       container.classList.add('job-flavors__flavor');
@@ -217,8 +217,8 @@ export class LinkedInInjector extends Base {
       title.classList.add('mb1');
       title.style.display = 'block';
 
-      salary.style.display = 'block';
-      salary.style.lineHeight = '1em';
+      salaryLink.style.display = 'block';
+      salaryLink.style.lineHeight = '1em';
 
       averageSalaryContainer.style.fontSize = '11px';
       averageSalaryContainer.style.lineHeight = '1em';
