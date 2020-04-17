@@ -148,8 +148,12 @@ export class Base {
     const logo = document.createElement('img');
     logo.src = `${teamlyzerUrl}/static/img/teamlyzer_logo_blue.svg`;
     logo.alt = 'Teamlyzer';
+    const logoLink = document.createElement('a');
+    logoLink.href = this.company.url;
+    logoLink.target = '_blank';
+    logoLink.appendChild(logo);
     const text = document.createElement('div');
-    text.appendChild(logo);
+    text.appendChild(logoLink);
     const heading = document.createElement('div');
     heading.appendChild(text);
 
@@ -184,6 +188,7 @@ export class Base {
     // Add Link
     const link = document.createElement('a');
     link.href = this.company.url;
+    link.target = '_blank';
     link.title = 'Abrir empresa no Teamlyzer';
     link.innerText = 'Abrir empresa no Teamlyzer';
 
@@ -196,6 +201,8 @@ export class Base {
 
     this.details = {
       text,
+      logo,
+      logoLink,
       heading,
       content,
       list,
@@ -325,6 +332,7 @@ export class Base {
 
     const averageSalaryLink = document.createElement('a');
     averageSalaryLink.href = `${this.company.url}/salary-reviews`;
+    averageSalaryLink.target = '_blank';
     averageSalaryLink.innerText = ' - ';
     averageSalaryLink.style.color = colors.primary;
     averageSalaryLink.prepend(averageMinSalary);
