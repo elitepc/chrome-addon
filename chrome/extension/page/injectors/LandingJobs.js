@@ -125,12 +125,14 @@ export class LandingJobsInjector extends Base {
         title,
         salary,
         averageSalaryContainer,
+        range,
       } = this.getSalaryElement();
 
       title.classList.add('ld-metatag-title');
       title.innerText = `${title.innerText}:`;
-      title.style.marginRight = '3px';
+      title.style.marginRight = '8px';
 
+      container.style.marginTop = '8px';
       container.classList.add('ld-metatag');
 
       salary.style.display = 'inline-block';
@@ -139,7 +141,7 @@ export class LandingJobsInjector extends Base {
       salary.style.marginTop = '2px';
       salary.style.marginBottom = '2px';
 
-      averageSalaryContainer.prepend(' - ');
+      averageSalaryContainer.style.display = 'block';
       averageSalaryContainer.style.fontSize = '11px';
       averageSalaryContainer.style.lineHeight = '1em';
 
@@ -197,12 +199,16 @@ export class LandingJobsInjector extends Base {
       container.appendChild(content);
       container.style.display = 'flex';
       container.style.flexDirection = 'row';
-      container.style.alignItems = 'center';
+      container.style.alignItems = 'baseline';
+
+      range.container.classList.add('ld-metatag');
+      range.container.style.marginTop = '8px';
 
       if (this.isJobOfferPage()) {
         const destinationEl = document.querySelector('.ld-job-category');
         if (destinationEl) {
           destinationEl.appendChild(container);
+          destinationEl.appendChild(range.container);
           this.salaryInjected = true;
         }
       }

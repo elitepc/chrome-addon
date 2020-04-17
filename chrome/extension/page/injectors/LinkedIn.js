@@ -198,14 +198,24 @@ export class LinkedInInjector extends Base {
         title,
         salary,
         averageSalaryContainer,
+        range,
       } = this.getSalaryElement();
+
+      const wrapper = document.createElement('div');
+      wrapper.appendChild(title);
+      wrapper.appendChild(salary);
+      wrapper.appendChild(averageSalaryContainer);
+
+      container.classList.add('job-flavors__flavor');
+      container.style.lineHeight = '1em';
+      container.style.display = 'flex';
+
+      container.appendChild(wrapper);
+      container.appendChild(range.container);
 
       title.classList.add('job-flavors__label');
       title.classList.add('mb1');
       title.style.display = 'block';
-
-      container.classList.add('job-flavors__flavor');
-      container.style.lineHeight = '1em';
 
       salary.style.display = 'block';
       salary.style.lineHeight = '1em';
@@ -213,9 +223,10 @@ export class LinkedInInjector extends Base {
       averageSalaryContainer.style.fontSize = '11px';
       averageSalaryContainer.style.lineHeight = '1em';
 
+      range.container.style.marginLeft = '24px';
+
       if (this.isJobOfferPage()) {
         container.classList.add('mt3');
-        container.style.display = 'block';
 
         const destinationEl = document.querySelector('.justify-space-between.display-flex.align-items-stretch.mb4 .mt6.ml5.flex-grow-1');
         if (destinationEl) {
@@ -227,9 +238,7 @@ export class LinkedInInjector extends Base {
         }
       } else if (this.isSearchPage()) {
         container.classList.add('mr3');
-
         container.classList.add('mb4');
-        container.style.display = 'block';
         container.style.width = '100%';
 
         const destinationEl = document.querySelector('.jobs-details-top-card__actions');

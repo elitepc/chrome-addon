@@ -1,3 +1,5 @@
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 import { teamlyzerUrl, colors } from '../../../../config';
 
 export class Base {
@@ -97,6 +99,27 @@ export class Base {
     return this.rating;
   }
 
+  getProgressBar(value) {
+    const progress = document.createElement('div');
+    progress.style.height = '14px';
+    progress.style.backgroundColor = colors.primary;
+    progress.style.border = `1px solid ${colors.primary}`;
+    progress.style.color = colors.white;
+    progress.style.textAlign = 'center';
+    progress.style.fontSize = '10px';
+    progress.style.lineHeight = '13px';
+    progress.style.width = `${value}%`;
+
+    const bar = document.createElement('div');
+    bar.style.backgroundColor = colors.primaryFade;
+    bar.appendChild(progress);
+
+    return {
+      progress,
+      bar,
+    };
+  }
+
   getProgressElement(text, value) {
     const title = document.createElement('p');
     title.innerText = text;
@@ -104,21 +127,8 @@ export class Base {
     title.style.marginBottom = '4px';
     title.style.fontSize = '14px';
 
-    const progress = document.createElement('div');
-    progress.style.height = '14px';
-    progress.style.transition = 'width .6s ease';
-    progress.style.backgroundColor = colors.primary;
-    progress.style.color = colors.white;
-    progress.style.border = `1px solid ${colors.primary}`;
-    progress.style.textAlign = 'center';
-    progress.style.width = `${value}%`;
-    progress.style.fontSize = '10px';
-    progress.style.lineHeight = '14px';
+    const { progress, bar } = this.getProgressBar(value);
     progress.innerText = `${Math.round(value)} / 100`;
-
-    const bar = document.createElement('div');
-    bar.style.backgroundColor = colors.primaryFade;
-    bar.appendChild(progress);
 
     const container = document.createElement('div');
 
@@ -206,6 +216,74 @@ export class Base {
     });
   }
 
+  getSalaryRange() {
+    const { progress, bar } = this.getProgressBar(50);
+
+    const minLabel = document.createElement('span');
+    minLabel.innerText = 'min';
+    minLabel.style.fontSize = '10px';
+    minLabel.style.lineHeight = 1;
+    const maxLabel = document.createElement('span');
+    maxLabel.style.fontSize = '10px';
+    maxLabel.innerText = 'max';
+    maxLabel.style.lineHeight = 1;
+
+    const minValue = document.createElement('span');
+    minValue.innerText = this.getSalaryString(this.company.salary.salaryCompanyDetails.salaryMin);
+    minValue.style.fontSize = '12px';
+    const maxValue = document.createElement('span');
+    maxValue.style.fontSize = '12px';
+    maxValue.innerText = this.getSalaryString(this.company.salary.salaryCompanyDetails.salaryMax);
+
+    const labelContainer = document.createElement('div');
+    labelContainer.style.display = 'flex';
+    labelContainer.style.justifyContent = 'space-between';
+    labelContainer.style.marginBottom = '2px';
+    labelContainer.appendChild(minLabel);
+    labelContainer.appendChild(maxLabel);
+
+    const valueContainer = document.createElement('div');
+    valueContainer.style.display = 'flex';
+    valueContainer.style.justifyContent = 'space-between';
+    valueContainer.style.marginTop = '8px';
+    valueContainer.appendChild(minValue);
+    valueContainer.appendChild(maxValue);
+
+    const container = document.createElement('div');
+    container.style.width = '200px';
+
+    const line = document.createElement('div');
+    line.style.width = '2px';
+    line.style.height = '24px';
+    line.style.position = 'absolute';
+    line.style.left = '50%';
+    line.style.top = '100%';
+    line.style.backgroundColor = colors.primaryFade;
+
+    bar.style.position = 'relative';
+    bar.appendChild(line);
+
+    const medianValue = this.getSalaryString(this.company.salary.salaryCompanyDetails.salaryMedian);
+    tippy(bar, {
+      content: `Mediana ${medianValue}`,
+    });
+
+    container.appendChild(labelContainer);
+    container.appendChild(bar);
+    container.appendChild(valueContainer);
+
+    this.salaryRange = {
+      progress,
+      bar,
+      minLabel,
+      maxLabel,
+      labelContainer,
+      container,
+    };
+
+    return this.salaryRange;
+  }
+
   getSalaryElement() {
     // Title
     const title = document.createElement('span');
@@ -263,6 +341,8 @@ export class Base {
     container.appendChild(salary);
     container.appendChild(averageSalaryContainer);
 
+    const range = this.getSalaryRange();
+
     this.salary = {
       title,
       salary,
@@ -270,6 +350,7 @@ export class Base {
       container,
       averageSalaryLink,
       averageSalaryContainer,
+      range,
     };
 
     return this.salary;
