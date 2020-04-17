@@ -3,6 +3,8 @@ import { teamlyzerUrl } from '../../../config';
 const URL_PATTERNS = [
   `${teamlyzerUrl}/*`,
   'https://www.itjobs.pt/*',
+  'https://www.linkedin.com/*',
+  'https://landing.jobs/*',
 ];
 const CONTEXT_MENU_ID = 'TL_context';
 const CREATE_REVIEW_MENU_ID = 'TL_create_menu';
