@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "name": "Teamlyzer",
   "manifest_version": 2,
-  "description": "Adiciona informação detalhada de cada empresa e estimativas de salário nos anúncios de emprego nas páginas do ITJobs.",
+  "description": "Adiciona informação detalhada de cada empresa e estimativas de salário nos anúncios de emprego nas páginas do ITJobs, LinkedIn e Landing Jobs.",
   "browser_action": {
     "default_title": "Teamlyzer",
     "default_popup": "popup.html"
