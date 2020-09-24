@@ -215,7 +215,7 @@ export class Base {
 
   getSalaryString(value) {
     const number = parseFloat(value);
-    return number.toLocaleString('pt-pt', {
+    return number.toLocaleString('de-DE', {
       style: 'currency',
       currency: 'EUR',
       minimumFractionDigits: 0,
