@@ -2,6 +2,20 @@ import debounce from 'lodash/debounce';
 import { colors } from '../../../../config';
 import { Base } from './Base';
 
+const ratingElSelector = {
+  jobOfferPage: '.jobs-top-card__company-logo',
+  companyPage: '.org-top-card-primary-content__content',
+  searchPage: '.jobs-details-top-card__company-info',
+};
+const salaryElSelector = {
+  jobOfferPage: '.justify-space-between.display-flex.align-items-stretch.pb4 .mt6.ml5.flex-grow-1',
+  searchPage: '.jobs-details-top-card__actions',
+};
+const detailsElSelector = {
+  jobOfferPage: '.right-rail',
+  companyPage: '.org-grid__right-rail',
+};
+
 export class LinkedInInjector extends Base {
   constructor(loader) {
     super(loader);
@@ -18,8 +32,14 @@ export class LinkedInInjector extends Base {
 
   observeBoot() {
     if (document.body.classList.contains('boot-complete')) {
-      this.cleanup();
-      this.inject();
+      if (
+        !this.detailsInjected
+        && !this.salaryInjected
+        && !this.ratingInjected
+      ) {
+        this.cleanup();
+        this.inject();
+      }
     }
   }
 
@@ -59,7 +79,7 @@ export class LinkedInInjector extends Base {
   startSalaryContainerObserver() {
     let el = null;
     if (this.isJobOfferPage()) {
-      el = document.querySelector('.justify-space-between.display-flex.align-items-stretch.mb4 .mt6.ml5.flex-grow-1');
+      el = document.querySelector(salaryElSelector.jobOfferPage);
     }
     if (el) {
       this.salaryContainerObserver.observe(el, {
@@ -99,16 +119,16 @@ export class LinkedInInjector extends Base {
       const rating = this.getRatingElement();
       rating.style.marginRight = '8px';
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.jobs-top-card');
+        const destinationEl = document.querySelector(ratingElSelector.jobOfferPage);
         if (destinationEl) {
           rating.style.position = 'absolute';
           rating.style.top = '86px';
           rating.style.left = '112px';
-          destinationEl.prepend(rating);
+          destinationEl.parentNode.insertBefore(rating, destinationEl.nextSibling);
           this.ratingInjected = true;
         }
       } else if (this.isCompanyPage()) {
-        const destinationEl = document.querySelector('.org-top-card-primary-content__content');
+        const destinationEl = document.querySelector(ratingElSelector.companyPage);
         if (destinationEl) {
           destinationEl.style.position = 'relative';
           rating.style.position = 'absolute';
@@ -119,7 +139,7 @@ export class LinkedInInjector extends Base {
           this.ratingInjected = true;
         }
       } else if (this.isSearchPage()) {
-        const destinationEl = document.querySelector('.jobs-details-top-card__company-info');
+        const destinationEl = document.querySelector(ratingElSelector.searchPage);
         if (destinationEl) {
           destinationEl.prepend(rating);
           this.ratingInjected = true;
@@ -176,13 +196,13 @@ export class LinkedInInjector extends Base {
       container.appendChild(link);
 
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.right-rail');
+        const destinationEl = document.querySelector(detailsElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.prepend(container);
           this.detailsInjected = true;
         }
       } else if (this.isCompanyPage()) {
-        const sidebar = document.querySelector('.org-grid__right-rail');
+        const sidebar = document.querySelector(detailsElSelector.companyPage);
         if (sidebar) {
           sidebar.prepend(container);
           this.detailsInjected = true;
@@ -227,8 +247,7 @@ export class LinkedInInjector extends Base {
 
       if (this.isJobOfferPage()) {
         container.classList.add('mt3');
-
-        const destinationEl = document.querySelector('.justify-space-between.display-flex.align-items-stretch.mb4 .mt6.ml5.flex-grow-1');
+        const destinationEl = document.querySelector(salaryElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.appendChild(container);
           this.salaryInjected = true;
@@ -241,7 +260,7 @@ export class LinkedInInjector extends Base {
         container.classList.add('mb4');
         container.style.width = '100%';
 
-        const destinationEl = document.querySelector('.jobs-details-top-card__actions');
+        const destinationEl = document.querySelector(salaryElSelector.searchPage);
         if (destinationEl) {
           destinationEl.prepend(container);
           this.salaryInjected = true;
