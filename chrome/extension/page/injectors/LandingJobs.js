@@ -1,6 +1,19 @@
 import debounce from 'lodash/debounce';
 import { Base } from './Base';
 
+
+const ratingElSelector = {
+  jobOfferPage: '[class^="Title-module_company"]',
+  companyPage: 'h1[class^="CompanyPage-module_title"]',
+};
+const salaryElSelector = {
+  jobOfferPage: '[class^="Header-module_wrapper"]',
+};
+const detailsElSelector = {
+  jobOfferPage: '[class^="JobPage-module_rightSide"]',
+  companyPage: 'aside[class^="Sidebar-module_sidebar"]',
+};
+
 export class LandingJobsInjector extends Base {
   constructor(loader) {
     super(loader);
@@ -65,13 +78,14 @@ export class LandingJobsInjector extends Base {
     if (this.company.rating && this.company.url) {
       const rating = this.getRatingElement();
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.ld-company-name');
+        const destinationEl = document.querySelector(ratingElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.prepend(rating);
+          rating.style.marginRight = '1rem';
           this.ratingInjected = true;
         }
       } else if (this.isCompanyPage()) {
-        const destinationEl = document.querySelector('h1[class^="CompanyPage-module_title"]');
+        const destinationEl = document.querySelector(ratingElSelector.companyPage);
         if (destinationEl) {
           rating.style.marginLeft = '16px';
           destinationEl.appendChild(rating);
@@ -95,19 +109,15 @@ export class LandingJobsInjector extends Base {
       link.style.marginTop = '.55rem';
 
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.ld-sidebar-inner');
+        const destinationEl = document.querySelector(detailsElSelector.jobOfferPage);
         if (destinationEl) {
-          const breakEl = document.createElement('div');
-          breakEl.classList.add('ld-share-block');
-
-          container.prepend(breakEl);
-
-          const referenceEl = document.querySelector('.ld-share-block');
+          container.style.marginBottom = '4rem';
+          const referenceEl = document.querySelector('[class^="Sidebar-module_shareSection"]');
           destinationEl.insertBefore(container, referenceEl);
           this.detailsInjected = true;
         }
       } else if (this.isCompanyPage()) {
-        const sidebar = document.querySelector('aside[class^="Sidebar-module_sidebar"');
+        const sidebar = document.querySelector(detailsElSelector.companyPage);
         if (sidebar) {
           container.style.marginBottom = '2rem';
 
@@ -133,6 +143,7 @@ export class LandingJobsInjector extends Base {
       title.style.marginRight = '8px';
 
       container.style.marginTop = '8px';
+      container.style.marginLeft = '0';
       container.classList.add('ld-metatag');
 
       salaryLink.style.display = 'inline-block';
@@ -205,7 +216,7 @@ export class LandingJobsInjector extends Base {
       range.container.style.marginTop = '8px';
 
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.ld-job-category');
+        const destinationEl = document.querySelector(salaryElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.appendChild(container);
           destinationEl.appendChild(range.container);
