@@ -1,5 +1,17 @@
 import { Base } from './Base';
 
+const ratingElSelector = {
+  jobOfferPage: '.job-header h4.thin.grey',
+  companyPage: 'h1.title',
+};
+const salaryElSelector = {
+  jobOfferPage: '.job-header .item-details > ul',
+};
+const detailsElSelector = {
+  jobOfferPage: '.main-container .col-md-3.altered .col-xs-12.col-sm-12.col-md-12',
+  companyPage: '.main-container .col-md-12',
+};
+
 export class ITJobsInjector extends Base {
   isCompanyPage() {
     return /^\/empresa\/(.*)/.test(this.path);
@@ -14,13 +26,13 @@ export class ITJobsInjector extends Base {
       const rating = this.getRatingElement();
       rating.style.marginRight = '8px';
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.job-header h4.thin.grey');
+        const destinationEl = document.querySelector(ratingElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.prepend(rating);
           this.ratingInjected = true;
         }
       } else if (this.isCompanyPage()) {
-        const destinationEl = document.querySelector('.company-header h1.title');
+        const destinationEl = document.querySelector(ratingElSelector.companyPage);
         if (destinationEl) {
           destinationEl.prepend(rating);
           this.ratingInjected = true;
@@ -62,7 +74,7 @@ export class ITJobsInjector extends Base {
       content.appendChild(clearfix);
 
       if (this.isJobOfferPage()) {
-        const destinationEl = document.querySelector('.main-container .col-md-3.altered .col-xs-12.col-sm-12.col-md-12');
+        const destinationEl = document.querySelector(detailsElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.prepend(container);
           this.detailsInjected = true;
@@ -72,7 +84,7 @@ export class ITJobsInjector extends Base {
         wrapper.style.marginBottom = '20px';
         wrapper.appendChild(container);
 
-        const mainContainer = document.querySelector('.main-container .col-md-12');
+        const mainContainer = document.querySelector(detailsElSelector.companyPage);
         mainContainer.classList.remove('col-md-12');
         mainContainer.classList.add('col-md-9');
         mainContainer.classList.add('altered');
@@ -124,12 +136,15 @@ export class ITJobsInjector extends Base {
       listItem.appendChild(iconWrapper);
       listItem.appendChild(container);
 
-      const rangeListItem = document.createElement('li');
-      rangeListItem.appendChild(range.container);
-
-      const destinationEl = document.querySelector('.job-header .item-details > ul');
+      const destinationEl = document.querySelector(salaryElSelector.jobOfferPage);
       destinationEl.appendChild(listItem);
-      destinationEl.appendChild(rangeListItem);
+
+      if (range) {
+        const rangeListItem = document.createElement('li');
+        rangeListItem.appendChild(range.container);
+        destinationEl.appendChild(rangeListItem);
+      }
+
       this.salaryInjected = true;
     }
   }

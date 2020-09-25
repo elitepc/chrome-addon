@@ -224,7 +224,13 @@ export class Base {
   }
 
   getSalaryRange() {
-    const { progress, bar } = this.getProgressBar(50);
+    if (
+      !this.company.salary.salaryCompanyDetails.salaryMin && 
+      !this.company.salary.salaryCompanyDetails.salaryMax &&
+      !this.company.salary.salaryCompanyDetails.salaryMedian
+    ) {
+      return null;
+    }
 
     const minLabel = document.createElement('span');
     minLabel.innerText = 'min';
@@ -259,11 +265,21 @@ export class Base {
     const container = document.createElement('div');
     container.style.width = '200px';
 
+    const medianPercentage = (
+      (
+        this.company.salary.salaryCompanyDetails.salaryMedian
+        - this.company.salary.salaryCompanyDetails.salaryMin
+      ) / (
+        this.company.salary.salaryCompanyDetails.salaryMax
+        - this.company.salary.salaryCompanyDetails.salaryMin
+      )) * 100;
+    const { progress, bar } = this.getProgressBar(medianPercentage);
+
     const line = document.createElement('div');
     line.style.width = '2px';
     line.style.height = '24px';
     line.style.position = 'absolute';
-    line.style.left = '50%';
+    line.style.left = `${medianPercentage}%`;
     line.style.top = '100%';
     line.style.backgroundColor = colors.primaryFade;
 
@@ -292,35 +308,45 @@ export class Base {
   }
 
   getSalaryElement() {
+    const hasData = this.company.salary.avgJobSalary.salaryMaxAvg
+      && this.company.salary.avgJobSalary.salaryMinAvg;
     // Title
     const title = document.createElement('span');
     title.innerText = 'Salário previsto';
 
-    // Salary difference arrow
-    const arrow = document.createElement('i');
-    arrow.style.marginLeft = '4px';
-
-    if (this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg) {
-      arrow.style.color = colors.red;
-      arrow.innerHTML = '&darr;';
-    } else {
-      arrow.style.color = colors.green;
-      arrow.innerHTML = '&uarr;';
-    }
-
-    // Average salary
-    const minValue = this.getSalaryString(this.company.salary.avgJobSalary.salaryMinAvg);
-    const maxValue = this.getSalaryString(this.company.salary.avgJobSalary.salaryMaxAvg);
-    const minSalary = document.createElement('span');
-    minSalary.innerText = minValue;
-    const maxSalary = document.createElement('span');
-    maxSalary.innerText = maxValue;
-
+    // Salary
     const salary = document.createElement('span');
-    salary.innerText = ' - ';
-    salary.prepend(minSalary);
-    salary.appendChild(maxSalary);
-    salary.appendChild(arrow);
+    let arrow = null;
+    if (hasData) {
+      // Salary difference arrow
+      arrow = document.createElement('i');
+      arrow.style.marginLeft = '4px';
+
+      if (
+        this.company.salary.avgJobSalary.salaryMaxAvg < this.company.salary.avgJobSalaryIndustry.salaryMaxAvg
+      ) {
+        arrow.style.color = colors.red;
+        arrow.innerHTML = '&darr;';
+      } else {
+        arrow.style.color = colors.green;
+        arrow.innerHTML = '&uarr;';
+      }
+
+      // Average salary
+      const minValue = this.getSalaryString(this.company.salary.avgJobSalary.salaryMinAvg);
+      const maxValue = this.getSalaryString(this.company.salary.avgJobSalary.salaryMaxAvg);
+      const minSalary = document.createElement('span');
+      minSalary.innerText = minValue;
+      const maxSalary = document.createElement('span');
+      maxSalary.innerText = maxValue;
+
+      salary.innerText = ' - ';
+      salary.prepend(minSalary);
+      salary.appendChild(maxSalary);
+      salary.appendChild(arrow);
+    } else {
+      salary.innerHTML = 'Ainda sem dados';
+    }
 
     const salaryLink = document.createElement('a');
     salaryLink.href = `${this.company.url}/salary-reviews`;

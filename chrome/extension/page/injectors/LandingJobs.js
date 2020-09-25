@@ -1,7 +1,6 @@
 import debounce from 'lodash/debounce';
 import { Base } from './Base';
 
-
 const ratingElSelector = {
   jobOfferPage: '[class^="Title-module_company"]',
   companyPage: 'h1[class^="CompanyPage-module_title"]',
@@ -212,14 +211,19 @@ export class LandingJobsInjector extends Base {
       container.style.flexDirection = 'row';
       container.style.alignItems = 'baseline';
 
-      range.container.classList.add('ld-metatag');
-      range.container.style.marginTop = '8px';
+      if (range) {
+        range.container.classList.add('ld-metatag');
+        range.container.style.marginTop = '8px';
+      }
+
 
       if (this.isJobOfferPage()) {
         const destinationEl = document.querySelector(salaryElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.appendChild(container);
-          destinationEl.appendChild(range.container);
+          if (range) {
+            destinationEl.appendChild(range.container);
+          }
           this.salaryInjected = true;
         }
       }
