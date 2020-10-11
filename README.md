@@ -1,4 +1,4 @@
-> Teamlyzer's Google Chrome extension that adds salary and company statistics to job pages.
+> Teamlyzer's Google Chrome extension that adds salary insights to job pages (LinkedIn, Itjobs and Landing.jobs).
 
 ## Features
 
