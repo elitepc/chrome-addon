@@ -1,19 +1,18 @@
 import debounce from 'lodash/debounce';
-import { colors } from '../../../../config';
 import { Base } from './Base';
 
 const ratingElSelector = {
-  jobOfferPage: '.jobs-top-card__company-logo',
-  companyPage: '.org-top-card-primary-content__content',
+  jobOfferPage: '.jobs-unified-top-card h1',
+  companyPage: '.org-top-card .relative',
   searchPage: '.jobs-details-top-card__company-info',
 };
 const salaryElSelector = {
-  jobOfferPage: '.justify-space-between.display-flex.align-items-stretch.pb4 .mt6.ml5.flex-grow-1',
+  jobOfferPage: '.jobs-unified-top-card > .p5',
   searchPage: '.jobs-details-top-card__actions',
 };
 const detailsElSelector = {
   jobOfferPage: '.right-rail',
-  companyPage: '.org-grid__right-rail',
+  companyPage: '.org-grid__right-rail-margin-enforcer',
 };
 
 export class LinkedInInjector extends Base {
@@ -62,7 +61,7 @@ export class LinkedInInjector extends Base {
   }
 
   startSearchPageObserver() {
-    const el = document.querySelector('.jobs-search-two-pane__details');
+    const el = document.querySelector('.jobs-search__right-rail');
     this.searchObserver.observe(el, {
       childList: true,
       subtree: true,
@@ -121,10 +120,11 @@ export class LinkedInInjector extends Base {
       if (this.isJobOfferPage()) {
         const destinationEl = document.querySelector(ratingElSelector.jobOfferPage);
         if (destinationEl) {
-          rating.style.position = 'absolute';
-          rating.style.top = '86px';
-          rating.style.left = '112px';
-          destinationEl.parentNode.insertBefore(rating, destinationEl.nextSibling);
+          destinationEl.parentNode.insertBefore(rating, destinationEl.previousSibling);
+          rating.style.marginLeft = '8px';
+          const logo = document.querySelector('.jobs-unified-top-card > .p5 a');
+          logo.style.display = 'inline-block';
+          logo.style.verticalAlign = 'middle';
           this.ratingInjected = true;
         }
       } else if (this.isCompanyPage()) {
@@ -132,9 +132,8 @@ export class LinkedInInjector extends Base {
         if (destinationEl) {
           destinationEl.style.position = 'relative';
           rating.style.position = 'absolute';
-          rating.style.top = '0px';
-          rating.style.left = '128px';
-          rating.style.transform = 'translateY(-100%)';
+          rating.style.top = '10px';
+          rating.style.left = '144px';
           destinationEl.prepend(rating);
           this.ratingInjected = true;
         }
@@ -160,38 +159,25 @@ export class LinkedInInjector extends Base {
       } = this.getDetailsElement();
 
       container.classList.add('mb3');
-      container.classList.add('container-with-shadow');
+      container.classList.add('artdeco-card');
       container.classList.add('p0');
 
-      heading.classList.add('ph4');
-      heading.classList.add('pt4');
-      heading.classList.add('pb2');
-      heading.classList.add('t-18');
+      heading.classList.add('p4');
+      heading.classList.add('t-20');
+      heading.classList.add('t-bold');
 
       text.firstChild.style.display = 'block';
 
-      content.classList.add('pt3');
-      content.classList.add('pb1');
-      content.classList.add('ph4');
+      list.classList.add('artdeco-list');
+      list.classList.add('ph4');
 
-      list.classList.add('org-highlight-reel-module__card');
-      list.classList.add('artdeco-card');
-      list.classList.add('p3');
-      list.style.boxShadow = '0 0 0 1px rgba(0,0,0,.15)';
-
-      link.classList.add('t-14');
-      link.classList.add('t-black--light');
-      link.classList.add('t-bold');
-      link.classList.add('artdeco-button');
-      link.classList.add('artdeco-button--1');
-      link.classList.add('artdeco-button--tertiary');
+      link.classList.add('artdeco-card__actions');
       link.classList.add('mt3');
-      link.style.borderTop = '1px solid rgba(0,0,0,.15)';
-      link.style.display = 'flex';
-      link.style.justifyContent = 'flex-center';
-      link.style.width = '100%';
-      link.style.padding = '16px';
-      link.style.color = colors.primary;
+      link.classList.add('artdeco-button');
+      link.classList.add('artdeco-button--muted');
+      link.classList.add('artdeco-button--3');
+      link.classList.add('artdeco-button--full');
+      link.classList.add('artdeco-button--tertiary');
 
       container.appendChild(link);
 
@@ -246,7 +232,7 @@ export class LinkedInInjector extends Base {
       range.container.style.marginLeft = '24px';
 
       if (this.isJobOfferPage()) {
-        container.classList.add('mt3');
+        container.classList.add('mt5');
         const destinationEl = document.querySelector(salaryElSelector.jobOfferPage);
         if (destinationEl) {
           destinationEl.appendChild(container);

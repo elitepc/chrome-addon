@@ -151,6 +151,7 @@ export class Base {
     const logoLink = document.createElement('a');
     logoLink.href = this.company.url;
     logoLink.target = '_blank';
+    logo.style.display = 'block';
     logoLink.appendChild(logo);
     const text = document.createElement('div');
     text.appendChild(logoLink);

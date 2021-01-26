@@ -1,5 +1,6 @@
 import { Base } from './Base';
 
+
 export class LinkedInLoader extends Base {
   constructor() {
     super();
@@ -24,7 +25,7 @@ export class LinkedInLoader extends Base {
       name = this.getMeta('title');
     }
     if (this.isJobOfferPage()) {
-      const el = document.querySelector('.jobs-top-card__company-url');
+      const el = document.querySelector('.jobs-unified-top-card__subtitle-primary-grouping a');
       name = el.text.trim();
     }
     if (this.isSearchPage()) {
@@ -41,17 +42,17 @@ export class LinkedInLoader extends Base {
       slug = part;
     }
     if (this.isJobOfferPage()) {
-      const el = document.getElementsByClassName('jobs-top-card__company-url');
-      if (el[0]) {
-        const path = el[0].pathname;
+      const el = document.querySelector('.jobs-unified-top-card__subtitle-primary-grouping a');
+      if (el) {
+        const path = el.pathname;
         const [,, part] = path.split('/');
         slug = part;
       }
     }
     if (this.isSearchPage()) {
-      const el = document.getElementsByClassName('jobs-details-top-card__company-url');
-      if (el[0]) {
-        const path = el[0].pathname;
+      const el = document.querySelector('.jobs-details-top-card__company-url');
+      if (el) {
+        const path = el.pathname;
         const [,, part] = path.split('/');
         slug = part;
       }
