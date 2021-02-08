@@ -1,3 +1,4 @@
+import { colors } from '../../../../config';
 import { Base } from './Base';
 
 const ratingElSelector = {
@@ -120,6 +121,7 @@ export class ITJobsInjector extends Base {
       title.classList.add('title');
 
       salary.classList.add('field');
+      salary.style.color = colors.primary;
 
       averageSalaryContainer.style.fontSize = '13px';
       averageSalaryContainer.classList.add('field');

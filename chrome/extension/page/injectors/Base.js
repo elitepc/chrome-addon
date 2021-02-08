@@ -263,7 +263,11 @@ export class Base {
     valueContainer.appendChild(minValue);
     valueContainer.appendChild(maxValue);
 
-    const container = document.createElement('div');
+    const container = document.createElement('a');
+    container.href = `${this.company.url}/salary-reviews`;
+    container.target = '_blank';
+    container.style.color = 'inherit';
+    container.style.display = 'block';
     container.style.width = '200px';
 
     const medianPercentage = (
@@ -352,7 +356,7 @@ export class Base {
     const salaryLink = document.createElement('a');
     salaryLink.href = `${this.company.url}/salary-reviews`;
     salaryLink.target = '_blank';
-    salaryLink.style.color = 'inherit';
+    salaryLink.style.color = colors.primary;
     salaryLink.appendChild(salary);
 
     // Market average salary

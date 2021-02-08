@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import { Base } from './Base';
 
 const ratingElSelector = {
-  jobOfferPage: '[class^="Title-module_company"]',
+  jobOfferPage: '[class^="Title-module_secondLine"]',
   companyPage: 'h1[class^="CompanyPage-module_title"]',
 };
 const salaryElSelector = {
