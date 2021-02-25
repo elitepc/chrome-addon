@@ -45,7 +45,7 @@ If you are receiving the error message `Failed to load resource: net::ERR_INSECU
 * Run script
 ```bash
 # clone it
-$ git clone https://github.com/jhen0409/react-chrome-extension-boilerplate.git
+$ git clone https://github.com/teamlyzer/chrome-addon.git
 
 # Install dependencies
 $ yarn
